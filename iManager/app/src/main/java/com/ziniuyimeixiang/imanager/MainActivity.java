@@ -5,10 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Observable;
+import java.util.Observer;
 
+public class MainActivity extends AppCompatActivity implements Observer{
+
+    Model mModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mModel = Model.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
@@ -26,5 +31,8 @@ public class MainActivity extends AppCompatActivity {
     public void alarmBottonClicked(View view){
         Intent weatherIntent = new Intent(MainActivity.this, Alarm.class);
         startActivity(weatherIntent);
+    }
+    public void update(Observable o, Object arg) {
+
     }
 }
