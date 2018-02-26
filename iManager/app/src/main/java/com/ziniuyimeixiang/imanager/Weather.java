@@ -136,7 +136,15 @@ public class Weather extends AppCompatActivity implements Observer {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String cityRegionString = cityRegionInput.getText().toString();
-                doWeatherTask(cityRegionString);
+
+                /* before get json, check network*/
+                if (isNetworkConnected(Weather.this)){
+                    doWeatherTask(cityRegionString);
+                }
+                else{
+                    networkFailDialog(Weather.this).show();
+                }
+
             } 
         });
         alertBuilder.show();
