@@ -30,7 +30,7 @@ public class WeatherData extends Model {
 
 
     public WeatherData() {
-        defaultCityRegion = "Waterloo, ON";
+        defaultCityRegion = "Toronto, ON";
     }
 
     public String getDefaultCityRegion() {

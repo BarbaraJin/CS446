@@ -1,9 +1,12 @@
 package com.ziniuyimeixiang.imanager;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -65,7 +68,14 @@ public class Weather extends AppCompatActivity implements Observer {
         sunset = (TextView) findViewById(R.id.sunsetValue);
         sunrise = (TextView) findViewById(R.id.sunriseValue);
 
-        doWeatherTask("Waterloo,ON"); // TODO add search location function
+        /* check if network is available */
+        if (isNetworkConnected(Weather.this)){
+            String defaultCity = weatherData.getDefaultCityRegion();
+            doWeatherTask(defaultCity); // TODO add search location function
+        }
+        else{
+            networkFailDialog(Weather.this).show();
+        }
 
 //        getCityFromSearchItem();
         // TODO get current location
@@ -74,11 +84,44 @@ public class Weather extends AppCompatActivity implements Observer {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if ((item.getItemId()) == R.id.app_location_search){
+        if ((item.getItemId()) == R.id.app_location_search) {
             getCityFromSearchItem();
 //            getsupportMenu
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * check if network is connected
+     */
+    public boolean isNetworkConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            android.net.NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            android.net.NetworkInfo lte = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            if ((lte != null && lte.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting())) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public AlertDialog.Builder networkFailDialog(Context c) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(c);
+        alertBuilder.setTitle("No Internet Connection");
+        alertBuilder.setMessage("You need to connect wifi or open mobil data to access. Press OK to Exit.");
+
+        alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        return alertBuilder;
     }
 
     private void getCityFromSearchItem() {
