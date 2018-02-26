@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">iManager</string>
     <string name="title_activity_weather">Weather</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="action_search_location">Search location</string>
 </resources>
