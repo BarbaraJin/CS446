@@ -26,10 +26,19 @@ public class WeatherData extends Model {
     int lowTemp;
     String weatherText;
 
+    String defaultCityRegion;
+
 
     public WeatherData() {
-        city = "Waterloo";
-        region = "ON";
+        defaultCityRegion = "Waterloo, ON";
+    }
+
+    public String getDefaultCityRegion() {
+        return defaultCityRegion;
+    }
+
+    public void setDefaultCityRegion(String defaultCityRegion) {
+        this.defaultCityRegion = defaultCityRegion;
     }
 
     public String getCity() {

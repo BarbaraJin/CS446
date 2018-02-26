@@ -1,17 +1,23 @@
 package com.ziniuyimeixiang.imanager;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -61,6 +67,36 @@ public class Weather extends AppCompatActivity implements Observer {
 
         doWeatherTask("Waterloo,ON"); // TODO add search location function
 
+//        getCityFromSearchItem();
+        // TODO get current location
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if ((item.getItemId()) == R.id.app_location_search){
+            getCityFromSearchItem();
+//            getsupportMenu
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void getCityFromSearchItem() {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(Weather.this);
+        alertBuilder.setTitle("Change City");
+
+        final EditText cityRegionInput = new EditText(Weather.this);
+        cityRegionInput.setInputType(InputType.TYPE_CLASS_TEXT);
+        cityRegionInput.setHint("Waterloo, ON");
+        alertBuilder.setView(cityRegionInput);
+        alertBuilder.setPositiveButton("set", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String cityRegionString = cityRegionInput.getText().toString();
+                doWeatherTask(cityRegionString);
+            } 
+        });
+        alertBuilder.show();
     }
 
     public void doWeatherTask(String city){
