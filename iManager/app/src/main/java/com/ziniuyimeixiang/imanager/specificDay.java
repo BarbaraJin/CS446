@@ -5,11 +5,17 @@ import android.content.pm.PackageManager;
 import android.provider.CalendarContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.AndroidException;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.TimeZone;
@@ -45,7 +51,7 @@ public class specificDay extends AppCompatActivity implements Observer {
         long mil_start = c_start.getTimeInMillis()-(60*60*1000)*hourDifference;
         long mil_end = c_end.getTimeInMillis() - (60*60*1000)*hourDifference;
         String selection = "((dtstart >= "+mil_start+") AND (dtstart <= "+mil_end+"))";
-
+        List<String> events = new ArrayList<String>();
         //get permission
         if (checkSelfPermission(Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CALENDAR}, 120);
@@ -74,12 +80,19 @@ public class specificDay extends AppCompatActivity implements Observer {
                     String start = formatter.format(start_date);
                     String end = formatter.format(end_date);
                     String location = cursor.getString(id4);
-                    Toast.makeText(this, title + "," + start + "," + end + "," + location, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, title + "," + start + "," + end + "," + location, Toast.LENGTH_SHORT).show();
+                    events.add(start);
+                    events.add(end);
+                    events.add(title);
+                    events.add(location);
                 } else {
                     Toast.makeText(this, "no more", Toast.LENGTH_SHORT).show();
                 }
             }
         }
+        ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, events);
+        ListView lv = findViewById(R.id.llll);
+        lv.setAdapter(adapter);
 
     }
 
