@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.ziniuyimeixiang.imanager.Weather"
+    tools:showIn="@layout/activity_weather">
+
+    <!-- TODO need to change text waterloo to other -->
+    <TextView
+        android:id="@+id/locationText"
+        android:layout_width="252dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:contentDescription="location"
+        android:text="Waterloo, ON"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/HardcodeTemperatureText"
+        android:layout_width="157dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="36dp"
+        android:text="Temperature :"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationText" />
+
+    <TextView
+        android:id="@+id/hardcodeWindText"
+        android:layout_width="69dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:text="Wind :"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/HardcodeTemperatureText" />
+
+    <TextView
+        android:id="@+id/hardcodeHumidityText"
+        android:layout_width="121dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:text="Humidity :"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hardcodeWindText" />
+
+    <TextView
+        android:id="@+id/hardcodeVisibilityText"
+        android:layout_width="108dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:text="Visibility :"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hardcodeHumidityText" />
+
+    <TextView
+        android:id="@+id/hardcodeSunriseText"
+        android:layout_width="98dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:text="Sunrise :"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hardcodeVisibilityText" />
+
+    <TextView
+        android:id="@+id/hardcodeSunsetText"
+        android:layout_width="90dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:text="Sunset :"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hardcodeSunriseText" />
+
+    <ImageView
+        android:id="@+id/weatherIcon"
+        android:layout_width="91dp"
+        android:layout_height="81dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/locationText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/locationText"
+        app:layout_constraintTop_toTopOf="@+id/locationText"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:color/background_light" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="121dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/purple_yahoo" />
+
+    <TextView
+        android:id="@+id/currentTempValue"
+        android:layout_width="54dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="164dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/HardcodeTemperatureText"
+        app:layout_constraintStart_toStartOf="@+id/HardcodeTemperatureText"
+        app:layout_constraintTop_toTopOf="@+id/HardcodeTemperatureText"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/highLowTempValue"
+        android:layout_width="114dp"
+        android:layout_height="26dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/currentTempValue"
+        app:layout_constraintStart_toEndOf="@+id/currentTempValue"
+        app:layout_constraintTop_toTopOf="@+id/currentTempValue"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/windValue"
+        android:layout_width="267dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/hardcodeWindText"
+        app:layout_constraintStart_toStartOf="@+id/hardcodeWindText"
+        app:layout_constraintTop_toTopOf="@+id/hardcodeWindText"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/humidityValue"
+        android:layout_width="214dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="120dp"
+        android:text="0"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/hardcodeHumidityText"
+        app:layout_constraintStart_toStartOf="@+id/hardcodeHumidityText"
+        app:layout_constraintTop_toTopOf="@+id/hardcodeHumidityText"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/visibilityValue"
+        android:layout_width="229dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="120dp"
+        android:text="0"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/hardcodeVisibilityText"
+        app:layout_constraintStart_toStartOf="@+id/hardcodeVisibilityText"
+        app:layout_constraintTop_toTopOf="@+id/hardcodeVisibilityText"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/sunriseValue"
+        android:layout_width="236dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/hardcodeSunriseText"
+        app:layout_constraintStart_toStartOf="@+id/hardcodeSunriseText"
+        app:layout_constraintTop_toTopOf="@+id/hardcodeSunriseText"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/sunsetValue"
+        android:layout_width="252dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/hardcodeSunsetText"
+        app:layout_constraintStart_toStartOf="@+id/hardcodeSunsetText"
+        app:layout_constraintTop_toTopOf="@+id/hardcodeSunsetText"
+        app:layout_constraintVertical_bias="1.0" />
+
+</android.support.constraint.ConstraintLayout>
