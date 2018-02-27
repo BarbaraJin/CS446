@@ -35,6 +35,10 @@ public class MainActivity extends AppCompatActivity implements Observer{
         Intent weatherIntent = new Intent(MainActivity.this, Alarm.class);
         startActivity(weatherIntent);
     }
+    public void transClick(View view){
+        Intent weatherIntent = new Intent(MainActivity.this, TransActivity.class);
+        startActivity(weatherIntent);
+    }
     public void update(Observable o, Object arg) {
 
     }
