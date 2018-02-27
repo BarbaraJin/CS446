@@ -3,6 +3,7 @@ package com.ziniuyimeixiang.imanager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import java.util.Observable;
@@ -16,6 +17,8 @@ public class MainActivity extends AppCompatActivity implements Observer{
         mModel = Model.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        Intent alarm = new Intent(MainActivity.this,Alarm.class);
+//        startActivity(alarm);
     }
     // TODO need to change main activity's view
     public void weatherBottonClicked(View view){
