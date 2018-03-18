@@ -6,7 +6,7 @@
         android:id="@+id/app_location_search"
         android:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/ic_search_black_24dp"
-        android:orderInCategory="100"
+        android:orderInCategory="102"
         android:title="Search"
         app:showAsAction="always" />
 

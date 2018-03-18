@@ -2,6 +2,7 @@ package com.ziniuyimeixiang.imanager;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -35,6 +36,19 @@ import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceFilter;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+
 public class Weather extends AppCompatActivity implements Observer {
 
     private ImageView weatherIcon;
@@ -50,13 +64,24 @@ public class Weather extends AppCompatActivity implements Observer {
 
     WeatherData weatherData = new WeatherData();
 
+    protected GeoDataClient mGeoDataClient;
+    protected PlaceDetectionClient mPlaceDetectionClient;
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
+
+    /**
+     * do weather task of default city
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mGeoDataClient = Places.getGeoDataClient(this, null);
+        mPlaceDetectionClient = Places.getPlaceDetectionClient(this,null);
 
         weatherIcon = (ImageView) findViewById(R.id.weatherIcon);
         temperature = (TextView) findViewById(R.id.currentTempValue);
@@ -77,11 +102,16 @@ public class Weather extends AppCompatActivity implements Observer {
             networkFailDialog(Weather.this).show();
         }
 
-//        getCityFromSearchItem();
         // TODO get current location
 
     }
 
+    /**
+     * if item clicked, do something
+     *      if search item: call get city from search item
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if ((item.getItemId()) == R.id.app_location_search) {
@@ -110,6 +140,11 @@ public class Weather extends AppCompatActivity implements Observer {
         }
     }
 
+    /**
+     * if net work connection fail, show dialog
+     * @param c
+     * @return
+     */
     public AlertDialog.Builder networkFailDialog(Context c) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(c);
         alertBuilder.setTitle("No Internet Connection");
@@ -124,18 +159,36 @@ public class Weather extends AppCompatActivity implements Observer {
         return alertBuilder;
     }
 
+    /**
+     * show dialog, get city from text input, do weather task
+     */
     private void getCityFromSearchItem() {
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(Weather.this);
-        alertBuilder.setTitle("Change City");
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .build(this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
+    }
 
-        final EditText cityRegionInput = new EditText(Weather.this);
-        cityRegionInput.setInputType(InputType.TYPE_CLASS_TEXT);
-        cityRegionInput.setHint("Waterloo, ON");
-        alertBuilder.setView(cityRegionInput);
-        alertBuilder.setPositiveButton("set", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String cityRegionString = cityRegionInput.getText().toString();
+    /**
+     * get city name request code = 1
+     *  if city changed, then call do weather task
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+//                String cityRegionString = place.getName().toString();
+                String cityRegionString = place.getAddress().toString();
 
                 /* before get json, check network*/
                 if (isNetworkConnected(Weather.this)){
@@ -144,17 +197,29 @@ public class Weather extends AppCompatActivity implements Observer {
                 else{
                     networkFailDialog(Weather.this).show();
                 }
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                // TODO: Handle the error.
+//                Log.i(TAG, status.getStatusMessage());
 
-            } 
-        });
-        alertBuilder.show();
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
     }
 
+    /**
+     * if change city, do weather task: fetch data, change UI
+     * @param city
+     */
     public void doWeatherTask(String city){
         WeatherTask weatherTask = new WeatherTask();
         weatherTask.execute(new String[]{city});
     }
 
+    /**
+     * get bit map of weather Icon, then change on UI
+     */
     private class loadIconTask extends AsyncTask<String, Void, Bitmap>{
         @Override
         protected void onPostExecute(Bitmap bitmap) {
@@ -168,6 +233,9 @@ public class Weather extends AppCompatActivity implements Observer {
         }
     }
 
+    /**
+     * get weather data at the back, and change data on UI
+     */
     private class WeatherTask extends AsyncTask<String, Void, WeatherData>{
 
         @Override
@@ -208,6 +276,11 @@ public class Weather extends AppCompatActivity implements Observer {
 
     }
 
+    /**
+     * get weather icon from web
+     * @param code
+     * @return
+     */
     private Bitmap downloadIcon(String code){
         String imageUrl = "http://l.yimg.com/a/i/us/we/52/"+ code + ".gif";
         try{
