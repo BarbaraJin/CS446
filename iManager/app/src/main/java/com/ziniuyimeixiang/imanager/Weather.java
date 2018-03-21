@@ -80,6 +80,8 @@ public class Weather extends AppCompatActivity implements Observer {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        weatherData.addObserver(this);
+
         mGeoDataClient = Places.getGeoDataClient(this, null);
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this,null);
 
@@ -213,57 +215,7 @@ public class Weather extends AppCompatActivity implements Observer {
      * @param city
      */
     public void doWeatherTask(String city){
-        WeatherTask weatherTask = new WeatherTask();
-        weatherTask.execute(new String[]{city});
-    }
-
-    /**
-     * get bit map of weather Icon, then change on UI
-     */
-    private class loadIconTask extends AsyncTask<String, Void, Bitmap>{
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            weatherIcon.setImageBitmap(bitmap);
-            //super.onPostExecute(bitmap);
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... strings) {
-            return downloadIcon(strings[0]);
-        }
-    }
-
-    /**
-     * get weather data at the back, and change data on UI
-     */
-    private class WeatherTask extends AsyncTask<String, Void, WeatherData>{
-
-        @Override
-        protected WeatherData doInBackground(String... strings) {
-            String JsonWeatherData = (getDataFromWeb(strings[0]));
-            weatherData = parseJsonWeatherData(JsonWeatherData);
-            int code = weatherData.getCurrentWeatherCode();
-            String stringCode = Integer.toString(code);
-            new loadIconTask().execute(stringCode);
-            return weatherData;
-        }
-
-        @Override
-        protected void onPostExecute(WeatherData weather) {
-            super.onPostExecute(weather);
-            cityRegion.setText(weather.getCity() + ", " + weather.getRegion());
-            temperature.setText(weather.getCurrentTemp() + "°C");
-            highLowTemp.setText("(" + weather.getHighTemp() + "°C — " + weather.getLowTemp() + "°C" +")");
-            wind.setText(weather.getSpeed() + " mph");
-            humidity.setText(weather.getHumidity() + " %");
-            visibility.setText(weather.getVisibility() + " mi");
-            sunset.setText(weather.getSunset());
-            sunrise.setText(weather.getSunrise());
-
-            // change image
-
-
-        }
+        weatherData.setCurrentLocation(city);
     }
 
     @Override
@@ -273,150 +225,16 @@ public class Weather extends AppCompatActivity implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-
+        cityRegion.setText(weatherData.getCity() + ", " + weatherData.getRegion());
+        temperature.setText(weatherData.getCurrentTemp() + "°C");
+        highLowTemp.setText("(" + weatherData.getHighTemp() + "°C — " + weatherData.getLowTemp() + "°C" +")");
+        wind.setText(weatherData.getSpeed() + " mph");
+        humidity.setText(weatherData.getHumidity() + " %");
+        visibility.setText(weatherData.getVisibility() + " mi");
+        sunset.setText(weatherData.getSunset());
+        sunrise.setText(weatherData.getSunrise());
+        weatherIcon.setImageBitmap(weatherData.getWeatherIcon());
     }
 
-    /**
-     * get weather icon from web
-     * @param code
-     * @return
-     */
-    private Bitmap downloadIcon(String code){
-        String imageUrl = "http://l.yimg.com/a/i/us/we/52/"+ code + ".gif";
-        try{
-            URL url = new URL(imageUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
 
-            InputStream inputStream = connection.getInputStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-            return bitmap;
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-
-
-    }
-
-    /**
-     * get and read data from web
-     */
-    public String getDataFromWeb(String location){
-        //init
-        HttpURLConnection connection = null;
-
-        //fixed
-        String YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", location);
-        String yahooEndpoint = String.format("https://query.yahooapis.com/v1/public/yql?q=%s&format=json", Uri.encode(YQL));
-
-        try{
-            //connect
-            connection = (HttpURLConnection) (new URL(yahooEndpoint)).openConnection();
-            connection.setRequestMethod("GET");
-            connection.setDoInput(true);
-            connection.connect();
-
-            //read data
-            StringBuffer stringBuffer = new StringBuffer();
-            InputStream inputStream = connection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line = null;
-
-            while ((line = bufferedReader.readLine()) != null){
-                stringBuffer.append(line + "\r\n");
-            }
-            inputStream.close();
-            connection.disconnect();
-            return stringBuffer.toString();
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * parse json data
-     */
-    public WeatherData parseJsonWeatherData(String stringData){
-
-        try{
-            JSONObject data = new JSONObject(stringData);
-            JSONObject query = data.getJSONObject("query");
-
-            JSONObject channel = query.optJSONObject("results").optJSONObject("channel");
-
-            WeatherData weatherData = new WeatherData();
-
-            // get location
-            JSONObject location = channel.optJSONObject("location");
-            String city = location.optString("city");
-            String country = location.optString("country");
-            String region = location.optString("region");
-            weatherData.setCity(city);
-            weatherData.setCountry(country);
-            weatherData.setRegion(region);
-
-            // get wind
-            JSONObject wind = channel.optJSONObject("wind");
-            int direction = wind.optInt("direction");
-            int speed = wind.optInt("speed");
-            weatherData.setSpeed(speed);
-            weatherData.setDirection(direction);
-
-            // get atmosphere
-            JSONObject atmosphere = channel.optJSONObject("atmosphere");
-            int humidity = atmosphere.optInt("humidity");
-            float pressure = (float) atmosphere.optDouble("pressure");
-            float visibility = (float) atmosphere.optDouble("visibility");
-            weatherData.setHumidity(humidity);
-            weatherData.setPressure(pressure);
-            weatherData.setVisibility(visibility);
-
-            // get astronomy
-            JSONObject astronomy = channel.optJSONObject("astronomy");
-            String sunrise = astronomy.optString("sunrise");
-            String sunset =  astronomy.optString("sunset");
-            weatherData.setSunrise(sunrise);
-            weatherData.setSunset(sunset);
-
-            // get item
-            JSONObject item = channel.optJSONObject("item");
-
-            // get current condition
-            JSONObject condition = item.optJSONObject("condition");
-            int currentTemp = condition.optInt("temp");
-            int currentTempInC = (int) convertFtoC(currentTemp);
-            int currentWeatherCode = condition.optInt("code");
-            weatherData.setCurrentTemp(currentTempInC);
-            weatherData.setCurrentWeatherCode(currentWeatherCode);
-
-            // get today temp
-            JSONArray forecast = item.optJSONArray("forecast");
-            JSONObject today = forecast.getJSONObject(0); // TODO json array may wrong
-            int highTemp = today.optInt("high");
-            int lowTemp = today.optInt("low");
-            String weatherText = today.optString("text");
-
-            int highTempInC = (int) convertFtoC(highTemp);
-            int lowTempInC = (int) convertFtoC(lowTemp);
-            weatherData.setHighTemp(highTempInC);
-            weatherData.setLowTemp(lowTempInC);
-            weatherData.setWeatherText(weatherText);
-
-            return weatherData;
-
-        } catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /* convert F to C (temperature) */
-    public float convertFtoC(int f){
-        float temperature = ((f-32)*5)/9;
-        return temperature;
-    }
 }
