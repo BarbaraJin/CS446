@@ -107,28 +107,33 @@ public class MainActivity extends AppCompatActivity implements Observer {
         long currentTime = System.currentTimeMillis();
         Cursor cursor = null;
         String selection = "(dtstart >= " + currentTime + ")";
-        if (checkSelfPermission(Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CALENDAR}, 120);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-        }
-        //getcursor
-        else {
-            cursor = getContentResolver().query(CalendarContract.Events.CONTENT_URI, null, selection, null, CalendarContract.Events.DTSTART + " ASC");
-            cursor.moveToNext();
-            int id1 = cursor.getColumnIndex(CalendarContract.Events.TITLE);
-            int id2 = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
-            int id4 = cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.READ_CALENDAR}, 120);
+                }
+                //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+            }
+            //getcursor
+            else {
+                cursor = getContentResolver().query(CalendarContract.Events.CONTENT_URI, null, selection, null, CalendarContract.Events.DTSTART + " ASC");
+                cursor.moveToNext();
+                int id1 = cursor.getColumnIndex(CalendarContract.Events.TITLE);
+                int id2 = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
+                int id4 = cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
 
-            //display the event
-            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-            String title = cursor.getString(id1);
-            Date start_date = new Date(Long.valueOf(cursor.getString(id2)) + (60 * 60 * 1000) * mModel.getHourdiff());
-            String start = formatter.format(start_date);
-            location = cursor.getString(id4);
-            C_Button.setText(start + title + location);
-            mModel.setLocation(location);
-            mModel.setTime(start);
+                //display the event
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+                String title = cursor.getString(id1);
+                Date start_date = new Date(Long.valueOf(cursor.getString(id2)) + (60 * 60 * 1000) * mModel.getHourdiff());
+                String start = formatter.format(start_date);
+                location = cursor.getString(id4);
+                C_Button.setText(start + title + location);
+                mModel.setLocation(location);
+                mModel.setTime(start);
+            }
         }
+    }
 
     public void setRoute() {
         //replace with google map api later
