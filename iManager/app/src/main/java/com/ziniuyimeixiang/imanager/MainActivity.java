@@ -9,7 +9,9 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.provider.CalendarContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     Button C_Button;
     Button R_Button;
     Button test;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mModel = CalendarModel.getInstance();
@@ -52,11 +55,27 @@ public class MainActivity extends AppCompatActivity implements Observer {
 //        startActivity(alarm);
         C_Button = findViewById(R.id.Cbutton);
         R_Button = findViewById(R.id.Trans);
+        this.askP();
         this.getLocationFromAddress(this, "Toronto");
         this.getPosition();
         this.setCalender();
         this.setRoute();
-        //toronto should be replaced by the nearest event position
+
+    }
+
+    public void askP() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            }
+        }
     }
 
     // TODO need to change main activity's view
@@ -96,26 +115,24 @@ public class MainActivity extends AppCompatActivity implements Observer {
         //getcursor
         else {
             cursor = getContentResolver().query(CalendarContract.Events.CONTENT_URI, null, selection, null, CalendarContract.Events.DTSTART + " ASC");
-        }
-        cursor.moveToNext();
-        int id1 = cursor.getColumnIndex(CalendarContract.Events.TITLE);
-        int id2 = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
-        int id4 = cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
+            cursor.moveToNext();
+            int id1 = cursor.getColumnIndex(CalendarContract.Events.TITLE);
+            int id2 = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
+            int id4 = cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
 
-        //display the event
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-        String title = cursor.getString(id1);
-        Date start_date = new Date(Long.valueOf(cursor.getString(id2)) + (60 * 60 * 1000) * mModel.getHourdiff());
-        String start = formatter.format(start_date);
-        location = cursor.getString(id4);
-        C_Button.setText(start + title + location);
-        mModel.setLocation(location);
-        mModel.setTime(start);
-    }
+            //display the event
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+            String title = cursor.getString(id1);
+            Date start_date = new Date(Long.valueOf(cursor.getString(id2)) + (60 * 60 * 1000) * mModel.getHourdiff());
+            String start = formatter.format(start_date);
+            location = cursor.getString(id4);
+            C_Button.setText(start + title + location);
+            mModel.setLocation(location);
+            mModel.setTime(start);
+        }
 
     public void setRoute() {
-        double lat = 23.33;
-        double lng = 25.88;
+        //replace with google map api later
         float distance;
         Location locationA = new Location("A");
         locationA.setLatitude(mModel.getCur_att());
@@ -127,31 +144,32 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         distance = locationA.distanceTo(locationB) / 1000;
 
-        LatLng From = new LatLng(lat, lng);
-        LatLng To = new LatLng(lat, lng);
-
-
         int speedIs1KmMinute = 100;
         float estimatedDriveTimeInMinutes = distance / speedIs1KmMinute;
         R_Button.setText("distance is " + distance + "time needed is " + estimatedDriveTimeInMinutes);
     }
 
+    private boolean permission = false;
+
     public void getPosition() {
+        Location location = null;
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        while (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 120);
+        if (permission) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
+            mModel.curr_postion(longitude, latitude);
         }
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-        mModel.curr_postion(longitude,latitude);
     }
     public void getLocationFromAddress(Context context,String strAddress) {
 
@@ -177,6 +195,21 @@ public class MainActivity extends AppCompatActivity implements Observer {
         mModel.setEvent_att(p1.lat);
         mModel.setEvent_lon(p1.lng);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 101:
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    permission = true;
+                }else{
+                    permission = false;
+                }
+                break;
+        }
+    }
+
     public void update(Observable o, Object arg) {
         this.setCalender();
         this.setRoute();
