@@ -23,6 +23,7 @@ import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Observable;
@@ -30,12 +31,12 @@ import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity implements Observer{
 
-    Model mModel;
+    CalendarModel mModel;
     Button C_Button;
     Button R_Button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mModel = Model.getInstance();
+        mModel = CalendarModel.getInstance();
         mModel.addObserver(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

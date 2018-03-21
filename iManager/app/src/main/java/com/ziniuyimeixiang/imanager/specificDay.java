@@ -22,13 +22,14 @@ import java.util.TimeZone;
 
 import android.database.Cursor;
 public class specificDay extends AppCompatActivity implements Observer {
-    Model mModel;
+    CalendarModel mModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_day);
-        mModel = Model.getInstance();
+        mModel = CalendarModel.getInstance();
+        mModel.addObserver(this);
         setTitle(mModel.getCyear()+"/"+(mModel.getCmonth()+1)+"/"+mModel.getCday());
 
         //get hour diffenerce between time zone

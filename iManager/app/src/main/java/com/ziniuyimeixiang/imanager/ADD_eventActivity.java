@@ -30,10 +30,11 @@ public class ADD_eventActivity extends AppCompatActivity implements Observer {
     EditText Location;
     Button Save_event;
 
-    Model mModel;
+    CalendarModel mModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mModel = Model.getInstance();
+        mModel = CalendarModel.getInstance();
+        mModel.addObserver(this);
         Save_event = findViewById(R.id.save);
         setTitle("New Event");
         super.onCreate(savedInstanceState);
