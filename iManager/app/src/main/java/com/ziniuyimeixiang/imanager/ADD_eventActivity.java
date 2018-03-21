@@ -30,7 +30,6 @@ public class ADD_eventActivity extends AppCompatActivity implements Observer {
     EditText Location;
     Button Save_event;
 
-    Cursor cursor;
     Model mModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +84,6 @@ public class ADD_eventActivity extends AppCompatActivity implements Observer {
         }
 
         cv.put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance().getTimeZone().getID());
-        Toast.makeText(this, "step1", Toast.LENGTH_SHORT).show();
         if (checkSelfPermission(Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_CALENDAR}, 120);
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
@@ -94,7 +92,8 @@ public class ADD_eventActivity extends AppCompatActivity implements Observer {
                 // Android version is lesser than 6.0 or the permission is already granted.
                 Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, cv);
             }
-        Toast.makeText(this, "step2", Toast.LENGTH_SHORT).show();
+        //change the data in model
+        mModel.addEvent();
         this.finish();
     }
 //    public void test(View v){

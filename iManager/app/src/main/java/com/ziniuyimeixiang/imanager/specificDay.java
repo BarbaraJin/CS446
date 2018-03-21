@@ -23,7 +23,6 @@ import java.util.TimeZone;
 import android.database.Cursor;
 public class specificDay extends AppCompatActivity implements Observer {
     Model mModel;
-    Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -33,10 +32,12 @@ public class specificDay extends AppCompatActivity implements Observer {
         setTitle(mModel.getCyear()+"/"+(mModel.getCmonth()+1)+"/"+mModel.getCday());
 
         //get hour diffenerce between time zone
+        Cursor cursor = null;
         long currentTime = System.currentTimeMillis();
         int calOffset = TimeZone.getTimeZone("UTC").getOffset(currentTime);
         int localOffset = TimeZone.getDefault().getOffset(currentTime);
         int hourDifference = (calOffset - localOffset) / (1000 * 60 * 60);
+        mModel.setHourdiff(hourDifference);
 
         int year = mModel.getCyear();
         int month = mModel.getCmonth();

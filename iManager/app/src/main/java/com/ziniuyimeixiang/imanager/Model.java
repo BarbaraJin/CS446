@@ -1,13 +1,39 @@
 package com.ziniuyimeixiang.imanager;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.provider.CalendarContract;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
-
-
+import java.util.Calendar;
+import android.content.Context;
 class Model extends Observable{
+    //used to show information on a specific data
     private int cyear;
     private int cmonth;
     private int cday;
+
+
+    public int getHourdiff() {
+        return hourdiff;
+    }
+
+    public void setHourdiff(int hourdiff) {
+        this.hourdiff = hourdiff;
+    }
+
+    //used on main page
+    //today date
+    private int hourdiff;
+
+
+
+
 
     public int getCyear() {
         return cyear;
@@ -37,6 +63,12 @@ class Model extends Observable{
     static Model getInstance()
     {
         return ourInstance;
+    }
+
+    public void addEvent(){
+        //renew the nearest event's time and information
+
+        initObservers();
     }
     public void initObservers()
     {
