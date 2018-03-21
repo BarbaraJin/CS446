@@ -63,20 +63,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     }
 
-    public void askP() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-            }
-        }
-    }
     public void askP(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -161,18 +147,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         float estimatedDriveTimeInMinutes = distance / speedIs1KmMinute;
         R_Button.setText("distance is " + distance + "time needed is " + estimatedDriveTimeInMinutes);
     }
-<<<<<<< HEAD
-
     private boolean permission = false;
-
-=======
-    private boolean permission = false;
->>>>>>> d0c17d2d8605313192d5a0c33daf2adb205b203f
     public void getPosition() {
         Location location = null;
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (permission) {
-<<<<<<< HEAD
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -183,8 +162,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-=======
->>>>>>> d0c17d2d8605313192d5a0c33daf2adb205b203f
             location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             double longitude = location.getLongitude();
             double latitude = location.getLatitude();
