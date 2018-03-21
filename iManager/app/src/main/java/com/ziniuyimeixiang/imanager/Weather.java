@@ -62,7 +62,7 @@ public class Weather extends AppCompatActivity implements Observer {
     private TextView sunrise;
     private Bitmap bitmapIcon;
 
-    WeatherData weatherData = new WeatherData();
+    WeatherData weatherData;
 
     protected GeoDataClient mGeoDataClient;
     protected PlaceDetectionClient mPlaceDetectionClient;
@@ -80,6 +80,7 @@ public class Weather extends AppCompatActivity implements Observer {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        weatherData = WeatherData.getInstance();
         weatherData.addObserver(this);
 
         mGeoDataClient = Places.getGeoDataClient(this, null);

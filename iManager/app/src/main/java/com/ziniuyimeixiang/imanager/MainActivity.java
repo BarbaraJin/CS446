@@ -39,13 +39,15 @@ import java.util.Observer;
 public class MainActivity extends AppCompatActivity implements Observer {
 
     CalendarModel mModel;
+    WeatherData wModel;
     Button C_Button;
     Button R_Button;
-    Button test;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mModel = CalendarModel.getInstance();
         mModel.addObserver(this);
+        wModel = WeatherData.getInstance();
+        wModel.addObserver(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        Intent alarm = new Intent(MainActivity.this,Alarm.class);
@@ -57,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
         this.setCalender();
         this.setRoute();
         //toronto should be replaced by the nearest event position
+
+        /* weather button*/
+
     }
 
     // TODO need to change main activity's view
