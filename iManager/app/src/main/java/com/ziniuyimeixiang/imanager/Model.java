@@ -3,40 +3,19 @@ package com.ziniuyimeixiang.imanager;
 import java.util.Observable;
 import java.util.Observer;
 
-
 class Model extends Observable{
-    private int cyear;
-    private int cmonth;
-    private int cday;
-
-    public int getCyear() {
-        return cyear;
-    }
-
-    public void setCyear(int cyear) {
-        this.cyear = cyear;
-    }
-
-    public int getCmonth() {
-        return cmonth;
-    }
-
-    public void setCmonth(int cmonth) {
-        this.cmonth = cmonth;
-    }
-
-    public int getCday() {
-        return cday;
-    }
-
-    public void setCday(int cday) {
-        this.cday = cday;
-    }
+    //used to show information on a specific data
 
     private static final Model ourInstance = new Model();
     static Model getInstance()
     {
         return ourInstance;
+    }
+
+    public void addEvent(){
+        //renew the nearest event's time and information
+
+        initObservers();
     }
     public void initObservers()
     {

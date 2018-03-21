@@ -30,11 +30,11 @@ public class ADD_eventActivity extends AppCompatActivity implements Observer {
     EditText Location;
     Button Save_event;
 
-    Cursor cursor;
-    Model mModel;
+    CalendarModel mModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mModel = Model.getInstance();
+        mModel = CalendarModel.getInstance();
+        mModel.addObserver(this);
         Save_event = findViewById(R.id.save);
         setTitle("New Event");
         super.onCreate(savedInstanceState);
@@ -85,7 +85,6 @@ public class ADD_eventActivity extends AppCompatActivity implements Observer {
         }
 
         cv.put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance().getTimeZone().getID());
-        Toast.makeText(this, "step1", Toast.LENGTH_SHORT).show();
         if (checkSelfPermission(Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_CALENDAR}, 120);
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
@@ -94,35 +93,36 @@ public class ADD_eventActivity extends AppCompatActivity implements Observer {
                 // Android version is lesser than 6.0 or the permission is already granted.
                 Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, cv);
             }
-        Toast.makeText(this, "step2", Toast.LENGTH_SHORT).show();
+        //change the data in model
+        mModel.addEvent();
         this.finish();
     }
-    public void test(View v){
-        if (checkSelfPermission(Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CALENDAR}, 120);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-        }
-        else {
-            cursor = getContentResolver().query(CalendarContract.Events.CONTENT_URI, null, null, null, null);
-        }
-        while(cursor.moveToNext()){
-            if (cursor != null){
-                int id1 = cursor.getColumnIndex(CalendarContract.Events.TITLE);
-                int id2 = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
-                int id3 = cursor.getColumnIndex(CalendarContract.Events.DTEND);
-                int id4 = cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
-
-                String title = cursor.getString(id1);
-                String start = cursor.getString(id2);
-                String end = cursor.getString(id3);
-                String location = cursor.getString(id4);
-                Toast.makeText(this, title+","+start+","+end+","+location, Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(this, "no more", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+//    public void test(View v){
+//        if (checkSelfPermission(Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+//            requestPermissions(new String[]{Manifest.permission.READ_CALENDAR}, 120);
+//            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+//        }
+//        else {
+//            cursor = getContentResolver().query(CalendarContract.Events.CONTENT_URI, null, null, null, null);
+//        }
+//        while(cursor.moveToNext()){
+//            if (cursor != null){
+//                int id1 = cursor.getColumnIndex(CalendarContract.Events.TITLE);
+//                int id2 = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
+//                int id3 = cursor.getColumnIndex(CalendarContract.Events.DTEND);
+//                int id4 = cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
+//
+//                String title = cursor.getString(id1);
+//                String start = cursor.getString(id2);
+//                String end = cursor.getString(id3);
+//                String location = cursor.getString(id4);
+//                Toast.makeText(this, title+","+start+","+end+","+location, Toast.LENGTH_SHORT).show();
+//            }
+//            else{
+//                Toast.makeText(this, "no more", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
     @Override
         public void onRequestPermissionsResult(int requestCode, String[] permissions,
         int[] grantResults) {

@@ -17,7 +17,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class Calender extends AppCompatActivity implements Observer {
-    Model mModel;
+    CalendarModel mModel;
     Button add_event;
     CalendarView mCalendarView;
     @Override
@@ -25,7 +25,8 @@ public class Calender extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender);
         mCalendarView = findViewById(R.id.calendarView);
-        mModel = Model.getInstance();
+        mModel = CalendarModel.getInstance();
+        mModel.addObserver(this);
         setTitle("Calender");
         add_event = findViewById(R.id.add_event);
         add_event.setOnClickListener(new View.OnClickListener() {
