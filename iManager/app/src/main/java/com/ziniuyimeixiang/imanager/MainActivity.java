@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.maps.DirectionsApi;
@@ -41,15 +42,21 @@ import java.util.Observer;
 public class MainActivity extends AppCompatActivity implements Observer {
 
     CalendarModel mModel;
-    WeatherData wModel;
+    WeatherData weatherModel;
     Button C_Button;
     Button R_Button;
+
+    private TextView weatherLocation;
+    private TextView weatherTemp;
+    private TextView weatherInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mModel = CalendarModel.getInstance();
         mModel.addObserver(this);
-        wModel = WeatherData.getInstance();
-        wModel.addObserver(this);
+        weatherModel = WeatherData.getInstance();
+        weatherModel.addObserver(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        Intent alarm = new Intent(MainActivity.this,Alarm.class);
@@ -64,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
         //toronto should be replaced by the nearest event position
 
         /* weather button*/
+        setWeatherTextView();
+        getWeatherInfo();
 
     }
     public void askP(){
@@ -80,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
             }
         }
     }
+
     // TODO need to change main activity's view
     public void weatherBottonClicked(View view) {
         Intent weatherIntent = new Intent(MainActivity.this, Weather.class);
@@ -206,10 +216,30 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    public void setWeatherTextView(){
+        weatherLocation = findViewById(R.id.locationOnWeatherButton);
+        weatherTemp = findViewById(R.id.tempOnWeatherButton);
+        weatherInfo = findViewById(R.id.weatherInfoOnWeatherButton);
+    }
+
+    public void getWeatherInfo(){
+        String defaultLocation = weatherModel.getDefaultCityRegion();
+        weatherModel.setCurrentLocation(defaultLocation);
+    }
+
+    public void updateWeather(){
+        weatherLocation.setText(weatherModel.getCity() + ", " + weatherModel.getRegion());
+        weatherTemp.setText(weatherModel.getCurrentTemp() + "°C");
+        weatherInfo.setText(weatherModel.getWeatherText());
+    }
+
     public void update(Observable o, Object arg) {
         this.setCalender();
         this.setRoute();
         //toronto should be replaced by the nearest event position
         this.getLocationFromAddress(this, "Toronto");
+
+        updateWeather();
+
     }
 }

@@ -44,6 +44,10 @@ public class WeatherData extends Model {
 
     Bitmap weatherIcon;
 
+    /**
+     * create instance
+     */
+
     private static final WeatherData ourInstance = new WeatherData();
     static WeatherData getInstance()
     {
