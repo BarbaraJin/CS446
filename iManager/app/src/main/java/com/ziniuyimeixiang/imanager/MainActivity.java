@@ -4,12 +4,23 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Location;
 import android.provider.CalendarContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.model.DirectionsLeg;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.Duration;
+import com.google.maps.model.LatLng;
+import com.google.maps.model.TravelMode;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements Observer{
 
     Model mModel;
     Button C_Button;
+    Button R_Button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mModel = Model.getInstance();
@@ -30,7 +42,9 @@ public class MainActivity extends AppCompatActivity implements Observer{
 //        Intent alarm = new Intent(MainActivity.this,Alarm.class);
 //        startActivity(alarm);
         C_Button = findViewById(R.id.Cbutton);
+        R_Button = findViewById(R.id.Trans);
         this.setCalender();
+        this.setRoute();
     }
     // TODO need to change main activity's view
     public void weatherBottonClicked(View view){
@@ -85,8 +99,31 @@ public class MainActivity extends AppCompatActivity implements Observer{
         String start = formatter.format(start_date);
         location = cursor.getString(id4);
         C_Button.setText(start+title+location);
+        mModel.setLocation(location);
+        mModel.setTime(start);
     }
+    public void setRoute(){
+        double lat = 23.33;
+        double lng = 25.88;
+        float distance;
+        Location locationA=new Location("A");
+        locationA.setLatitude(lat);
+        locationA.setLongitude(lng);
 
+        Location locationB = new Location("B");
+        locationB.setLatitude(lng);
+        locationB.setLongitude(lat);
+
+        distance = locationA.distanceTo(locationB)/1000;
+
+        LatLng From = new LatLng(lat,lng);
+        LatLng To = new LatLng(lat,lng);
+
+
+        int speedIs1KmMinute = 100;
+        float estimatedDriveTimeInMinutes = distance / speedIs1KmMinute;
+        R_Button.setText("distance is "+distance+"time needed is " + estimatedDriveTimeInMinutes);
+    }
 
     public void update(Observable o, Object arg) {
         this.setCalender();

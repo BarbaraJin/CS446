@@ -27,10 +27,28 @@ class Model extends Observable{
         this.hourdiff = hourdiff;
     }
 
-    //used on main page
-    //today date
+    //TIME DIFF
     private int hourdiff;
+    //TIME AND LOCATION USED TO SHOW ROUTE INFORMATION ON MAIN PAGE
+    private String location;
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    private String time;
 
 
 
