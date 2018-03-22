@@ -216,6 +216,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    /**
+     * Weather section
+     */
     public void setWeatherTextView(){
         weatherLocation = findViewById(R.id.locationOnWeatherButton);
         weatherTemp = findViewById(R.id.tempOnWeatherButton);
@@ -232,6 +235,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         weatherTemp.setText(weatherModel.getCurrentTemp() + "°C");
         weatherInfo.setText(weatherModel.getWeatherText());
     }
+
+    /**
+     * update function
+     * @param o
+     * @param arg
+     */
 
     public void update(Observable o, Object arg) {
         this.setCalender();

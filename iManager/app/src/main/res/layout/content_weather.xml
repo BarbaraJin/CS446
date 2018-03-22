@@ -204,4 +204,46 @@
         app:layout_constraintTop_toTopOf="@+id/hardcodeSunsetText"
         app:layout_constraintVertical_bias="1.0" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="49dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        app:backgroundTint="@color/lightBlueColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_action_name"
+        android:scaleType="center"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/clothFloatingButton"
+        android:layout_width="38dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="4dp"
+        android:clickable="false"
+        android:scaleType="center"
+        android:visibility="gone"
+        app:backgroundTint="@color/normalBlueColor"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
+        app:srcCompat="@drawable/t_shirt_icon" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/homeFloatingButton"
+        android:layout_width="38dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="4dp"
+        android:clickable="false"
+        android:scaleType="center"
+        android:visibility="gone"
+        app:backgroundTint="@color/littleDarkBlueColor"
+        app:layout_constraintBottom_toTopOf="@+id/clothFloatingButton"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
+        app:srcCompat="@drawable/home_icon" />
+
 </android.support.constraint.ConstraintLayout>

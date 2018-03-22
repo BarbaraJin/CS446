@@ -21,6 +21,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -68,6 +70,10 @@ public class Weather extends AppCompatActivity implements Observer {
     protected PlaceDetectionClient mPlaceDetectionClient;
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
+    private FloatingActionButton mainFloatingButton, clothFloatingButton, homeFloatingButton;
+    private Boolean mainFabOpen;
+
+    private Animation fabOpen, fabClose, fabRotateClock, fabRotateAntiClock;
 
     /**
      * do weather task of default city
@@ -95,6 +101,9 @@ public class Weather extends AppCompatActivity implements Observer {
         visibility = (TextView) findViewById(R.id.visibilityValue);
         sunset = (TextView) findViewById(R.id.sunsetValue);
         sunrise = (TextView) findViewById(R.id.sunriseValue);
+
+        initiateFloatingButton();
+        listenFABButton();
 
         /* check if network is available */
         if (isNetworkConnected(Weather.this)){
@@ -225,6 +234,73 @@ public class Weather extends AppCompatActivity implements Observer {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * floating button section
+     */
+
+
+    private void initiateFloatingButton() {
+        mainFloatingButton = findViewById(R.id.floatingActionButton);
+        clothFloatingButton = findViewById(R.id.clothFloatingButton);
+        homeFloatingButton = findViewById(R.id.homeFloatingButton);
+
+        fabOpen = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.float_button_open);
+        fabClose = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.float_button_close);
+        fabRotateClock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise_45);
+        fabRotateAntiClock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_anticlockwise_45);
+        mainFabOpen = false;
+    }
+
+    public void listenFABButton(){
+        clothFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent wearingIntent = new Intent(Weather.this, WearingActivity.class);
+                startActivity(wearingIntent);
+            }
+        });
+
+        homeFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mainIntent = new Intent(Weather.this, MainActivity.class);
+                startActivity(mainIntent);
+            }
+        });
+
+        mainFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(mainFabOpen){
+                    clothFloatingButton.setClickable(false);
+                    clothFloatingButton.setVisibility(View.GONE);
+                    homeFloatingButton.setClickable(false);
+                    homeFloatingButton.setVisibility(View.GONE);
+                    mainFloatingButton.startAnimation(fabRotateAntiClock);
+                    mainFabOpen = false;
+                }
+                else{
+                    clothFloatingButton.setClickable(true);
+                    clothFloatingButton.setVisibility(View.VISIBLE);
+                    homeFloatingButton.setClickable(true);
+                    homeFloatingButton.setVisibility(View.VISIBLE);
+                    mainFloatingButton.startAnimation(fabRotateClock);
+                    mainFabOpen = true;
+                }
+
+            }
+        });
+
+    }
+
+
+
+    /**
+     * update function
+     * @param o
+     * @param arg
+     */
     public void update(Observable o, Object arg) {
         cityRegion.setText(weatherData.getCity() + ", " + weatherData.getRegion());
         temperature.setText(weatherData.getCurrentTemp() + "°C");
