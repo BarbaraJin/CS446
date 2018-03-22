@@ -213,9 +213,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        this.setCalender();
-        this.setRoute();
-        //toronto should be replaced by the nearest event position
-        this.getLocationFromAddress(this, "Toronto");
+        if ((String)arg == "new event") {
+            //toronto should be replaced by the nearest event position
+            this.getLocationFromAddress(this, "Toronto");
+            this.setCalender();
+            this.setRoute();
+        }
+        if ((String)arg == "new position") {
+            //toronto should be replaced by the nearest event position
+            this.setRoute();
+        }
     }
 }

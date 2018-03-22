@@ -12,11 +12,6 @@ class Model extends Observable{
         return ourInstance;
     }
 
-    public void addEvent(){
-        //renew the nearest event's time and information
-
-        initObservers();
-    }
     public void initObservers()
     {
 

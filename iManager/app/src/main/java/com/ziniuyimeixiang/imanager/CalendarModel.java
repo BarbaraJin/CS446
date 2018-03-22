@@ -117,11 +117,13 @@ public class CalendarModel extends Model {
     public void addEvent(){
         //renew the nearest event's time and information
 
-        initObservers();
+        setChanged();
+        notifyObservers("new event");
     }
     public void curr_postion(double l, double a){
         this.setCur_att(a);
         this.setCur_lon(l);
-        initObservers();
+        setChanged();
+        notifyObservers("new position");
     }
 }
