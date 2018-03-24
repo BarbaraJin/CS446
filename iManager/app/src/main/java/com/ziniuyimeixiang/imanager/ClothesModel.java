@@ -66,6 +66,7 @@ public class ClothesModel extends Model {
             upperCloth = "T-shirt or Tank top";
             lowerCloth = "shorts or skirts";
         }
+        setChanged();
         notifyObservers();
     }
 }

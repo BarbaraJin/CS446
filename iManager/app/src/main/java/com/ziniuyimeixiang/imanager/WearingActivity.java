@@ -58,6 +58,8 @@ public class WearingActivity extends AppCompatActivity implements Observer {
 
     private void changeClothes() {
         clothesData.changeClothesDependonTemp(lowTemp, highTemp);
+        lastLowTemp = lowTemp;
+        lastHighTemp = highTemp;
     }
 
 
@@ -78,7 +80,7 @@ public class WearingActivity extends AppCompatActivity implements Observer {
      */
     private void initiateWeatherInfo() {
         weatherData = WeatherData.getInstance();
-        weatherData.addObserver(this);
+//        weatherData.addObserver(this);
         lastLowTemp = 0;
         lastHighTemp = 0;
         lowTemp = 0;
@@ -92,8 +94,6 @@ public class WearingActivity extends AppCompatActivity implements Observer {
 
     private Boolean checkTempChanged() {
         Boolean answer =  !(lowTemp == lastLowTemp && highTemp == lastHighTemp);
-        lastLowTemp = lowTemp;
-        lastHighTemp = highTemp;
         return answer;
     }
 
@@ -159,11 +159,11 @@ public class WearingActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        updateWeather();
-        tempChanged = checkTempChanged();
-        if (tempChanged){
-            changeClothes();
-        }
+//        updateWeather();
+//        tempChanged = checkTempChanged();
+//        if (tempChanged){
+//            changeClothes();
+//        }
         updateClothes();
     }
 
