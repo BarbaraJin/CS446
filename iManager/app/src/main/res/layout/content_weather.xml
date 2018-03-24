@@ -219,7 +219,7 @@
         />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/clothFloatingButton"
+        android:id="@+id/weatherFloatingButton"
         android:layout_width="38dp"
         android:layout_height="39dp"
         android:layout_marginBottom="12dp"
@@ -242,7 +242,7 @@
         android:scaleType="center"
         android:visibility="gone"
         app:backgroundTint="@color/littleDarkBlueColor"
-        app:layout_constraintBottom_toTopOf="@+id/clothFloatingButton"
+        app:layout_constraintBottom_toTopOf="@+id/weatherFloatingButton"
         app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
         app:srcCompat="@drawable/home_icon" />
 

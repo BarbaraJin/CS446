@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     CalendarModel mModel;
     WeatherData weatherModel;
+    ClothesModel clothesData;
     Button C_Button;
     Button R_Button;
 
@@ -56,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
         mModel.addObserver(this);
         weatherModel = WeatherData.getInstance();
         weatherModel.addObserver(this);
+        // TODO somthing wrong in cloth update logic
+//        clothesData = ClothesModel.getInstance();
+//        clothesData.addObserver(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

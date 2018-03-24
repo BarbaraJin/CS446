@@ -4,37 +4,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -43,13 +27,9 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceFilter;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
 public class Weather extends AppCompatActivity implements Observer {
 
@@ -241,7 +221,7 @@ public class Weather extends AppCompatActivity implements Observer {
 
     private void initiateFloatingButton() {
         mainFloatingButton = findViewById(R.id.floatingActionButton);
-        clothFloatingButton = findViewById(R.id.clothFloatingButton);
+        clothFloatingButton = findViewById(R.id.weatherFloatingButton);
         homeFloatingButton = findViewById(R.id.homeFloatingButton);
 
         fabOpen = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.float_button_open);

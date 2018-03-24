@@ -6,4 +6,91 @@
     android:layout_height="match_parent"
     tools:context="com.ziniuyimeixiang.imanager.WearingActivity">
 
+    <TextView
+        android:id="@+id/upperBodyText"
+        android:layout_width="157dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="100dp"
+        android:text="Upper Body :"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lowerBodyText"
+        android:layout_width="157dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="76dp"
+        android:text="Lower Body :"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@+id/upperBodyText"
+        app:layout_constraintTop_toBottomOf="@+id/upperBodyText" />
+
+    <TextView
+        android:id="@+id/upperBodySuggestionText"
+        android:layout_width="157dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:textSize="25sp"
+        android:text="upper"
+        app:layout_constraintBottom_toBottomOf="@+id/upperBodyText"
+        app:layout_constraintStart_toEndOf="@+id/upperBodyText"
+        app:layout_constraintTop_toTopOf="@+id/upperBodyText" />
+
+    <TextView
+        android:id="@+id/lowerBodySuggestionText"
+        android:layout_width="157dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:textSize="25sp"
+        android:text="Lower"
+        app:layout_constraintBottom_toBottomOf="@+id/lowerBodyText"
+        app:layout_constraintStart_toEndOf="@+id/lowerBodyText"
+        app:layout_constraintTop_toTopOf="@+id/lowerBodyText" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="49dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        app:backgroundTint="@color/lightBlueColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_action_name"
+        android:scaleType="center"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/weatherFloatingButton"
+        android:layout_width="38dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="4dp"
+        android:clickable="false"
+        android:scaleType="center"
+        android:visibility="gone"
+        app:backgroundTint="@color/normalBlueColor"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
+        app:srcCompat="@drawable/temp_icon" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/homeFloatingButton"
+        android:layout_width="38dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="4dp"
+        android:clickable="false"
+        android:scaleType="center"
+        android:visibility="gone"
+        app:backgroundTint="@color/littleDarkBlueColor"
+        app:layout_constraintBottom_toTopOf="@+id/weatherFloatingButton"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
+        app:srcCompat="@drawable/home_icon" />
+
+
 </android.support.constraint.ConstraintLayout>
