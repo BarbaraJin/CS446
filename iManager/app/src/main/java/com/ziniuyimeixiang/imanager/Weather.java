@@ -179,9 +179,9 @@ public class Weather extends AppCompatActivity implements Observer {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-//                String cityRegionString = place.getName().toString();
                 String cityRegionString = place.getAddress().toString();
 
+                defaultLocationDialog(this, cityRegionString);
                 /* before get json, check network*/
                 if (isNetworkConnected(Weather.this)){
                     doWeatherTask(cityRegionString);
@@ -198,6 +198,27 @@ public class Weather extends AppCompatActivity implements Observer {
                 // The user canceled the operation.
             }
         }
+    }
+
+    public void defaultLocationDialog(Context c, final String typedInLocation) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(c);
+        alertBuilder.setTitle("default location");
+        alertBuilder.setMessage("Do you want to set this to the default location?");
+
+        alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                weatherData.setDefaultCityRegion(typedInLocation);
+            }
+        });
+
+        alertBuilder.setNegativeButton("ignore", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // do nothing
+            }
+        });
+        alertBuilder.show();
     }
 
     /**

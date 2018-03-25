@@ -55,7 +55,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         mModel = CalendarModel.getInstance();
         mModel.addObserver(this);
+
         weatherModel = WeatherData.getInstance();
+        weatherModel.setContext(this);
+        weatherModel.setWeatherInfo();
         weatherModel.addObserver(this);
         // TODO somthing wrong in cloth update logic
 //        clothesData = ClothesModel.getInstance();
