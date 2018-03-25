@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.sql.Time;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -42,6 +47,7 @@ public class Weather extends AppCompatActivity implements Observer {
     private TextView visibility;
     private TextView sunset;
     private TextView sunrise;
+    private TextView location, hardTemperature, hardWind, hardVisibility, hardHuminidity, hardSunrise, hardSunset;
     private Bitmap bitmapIcon;
 
     WeatherData weatherData;
@@ -52,6 +58,9 @@ public class Weather extends AppCompatActivity implements Observer {
 
     private FloatingActionButton mainFloatingButton, clothFloatingButton, homeFloatingButton;
     private Boolean mainFabOpen;
+
+    private ConstraintLayout constraintLayout;
+    private int weatherCode;
 
     private Animation fabOpen, fabClose, fabRotateClock, fabRotateAntiClock;
 
@@ -81,6 +90,15 @@ public class Weather extends AppCompatActivity implements Observer {
         visibility = (TextView) findViewById(R.id.visibilityValue);
         sunset = (TextView) findViewById(R.id.sunsetValue);
         sunrise = (TextView) findViewById(R.id.sunriseValue);
+        location = findViewById(R.id.locationText);
+        hardTemperature = findViewById(R.id.hardcodeTemperatureTextText);
+        hardWind = findViewById(R.id.hardcodeWindTextText);
+        hardVisibility = findViewById(R.id.hardcodeVisibilityText);
+        hardHuminidity = findViewById(R.id.hardcodeHumidityText);
+        hardSunrise = findViewById(R.id.hardcodeSunriseText);
+        hardSunset = findViewById(R.id.hardcodeSunsetText);
+
+        constraintLayout = findViewById(R.id.weatherConstraintLayout);
 
         initiateFloatingButton();
         listenFABButton();
@@ -312,6 +330,71 @@ public class Weather extends AppCompatActivity implements Observer {
         sunset.setText(weatherData.getSunset());
         sunrise.setText(weatherData.getSunrise());
         weatherIcon.setImageBitmap(weatherData.getWeatherIcon());
+        weatherCode = weatherData.getCurrentWeatherCode();
+        updateBackground();
+    }
+
+    private void updateBackground() {
+        if (weatherCode == 3 || weatherCode == 4 || weatherCode == 45|| weatherCode == 47 || (weatherCode >=37 && weatherCode <= 39)){
+            constraintLayout.setBackgroundResource(R.drawable.thunder);
+        }
+        else if (weatherCode == 5 || weatherCode == 7 || weatherCode == 46 || (weatherCode >=13 && weatherCode <= 16) || (weatherCode >=41 && weatherCode <= 43)){
+            constraintLayout.setBackgroundResource(R.drawable.snow);
+        }
+        else if (weatherCode == 6 || (weatherCode >=8 && weatherCode <= 12) || weatherCode == 35 || weatherCode == 40){
+            constraintLayout.setBackgroundResource(R.drawable.rain);
+        }
+        else if (weatherCode == 17 || weatherCode == 18){
+            constraintLayout.setBackgroundResource(R.drawable.hail);
+        }
+        else if (weatherCode >=19 && weatherCode <= 22){
+            constraintLayout.setBackgroundResource(R.drawable.foggy);
+        }
+        else if ((weatherCode >=26 && weatherCode <= 30) || weatherCode == 44){
+            constraintLayout.setBackgroundResource(R.drawable.cloud);
+        }
+        else{
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+            if (hour>= 7 && hour<=19){
+                constraintLayout.setBackgroundResource(R.drawable.day);
+            }
+            else{
+                constraintLayout.setBackgroundResource(R.drawable.night);
+                temperature.setTextColor(Color.WHITE);
+                highLowTemp.setTextColor(Color.WHITE); 
+                cityRegion.setTextColor(Color.WHITE);
+                wind.setTextColor(Color.WHITE);
+                humidity.setTextColor(Color.WHITE);
+                visibility.setTextColor(Color.WHITE);
+                sunset.setTextColor(Color.WHITE);
+                sunrise.setTextColor(Color.WHITE);
+                location.setTextColor(Color.WHITE);
+                hardTemperature.setTextColor(Color.WHITE);
+                hardWind.setTextColor(Color.WHITE);
+                hardVisibility.setTextColor(Color.WHITE);
+                hardHuminidity.setTextColor(Color.WHITE);
+                hardSunrise.setTextColor(Color.WHITE);
+                hardSunset.setTextColor(Color.WHITE);
+                return;
+            }
+        }
+        temperature.setTextColor(Color.BLACK);
+        highLowTemp.setTextColor(Color.BLACK);
+        cityRegion.setTextColor(Color.BLACK);
+        wind.setTextColor(Color.BLACK);
+        humidity.setTextColor(Color.BLACK);
+        visibility.setTextColor(Color.BLACK);
+        sunset.setTextColor(Color.BLACK);
+        sunrise.setTextColor(Color.BLACK);
+        location.setTextColor(Color.BLACK);
+        hardTemperature.setTextColor(Color.BLACK);
+        hardWind.setTextColor(Color.BLACK);
+        hardVisibility.setTextColor(Color.BLACK);
+        hardHuminidity.setTextColor(Color.BLACK);
+        hardSunrise.setTextColor(Color.BLACK);
+        hardSunset.setTextColor(Color.BLACK);
     }
 
 
