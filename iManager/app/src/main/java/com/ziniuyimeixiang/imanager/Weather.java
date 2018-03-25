@@ -21,9 +21,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.sql.Time;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -274,7 +272,7 @@ public class Weather extends AppCompatActivity implements Observer {
         clothFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent wearingIntent = new Intent(Weather.this, WearingActivity.class);
+                Intent wearingIntent = new Intent(Weather.this, ClothActivity.class);
                 startActivity(wearingIntent);
             }
         });
