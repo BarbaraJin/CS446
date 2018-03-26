@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
@@ -89,8 +90,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void transClick(View view) {
-        Intent weatherIntent = new Intent(MainActivity.this, TransActivity.class);
-        startActivity(weatherIntent);
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("google.navigation:q="+mModel.getLocation()));
+        startActivity(intent);
     }
 
     public void setCalender() {
@@ -215,8 +217,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void update(Observable o, Object arg) {
         if ((String)arg == "new event") {
             //toronto should be replaced by the nearest event position
-            this.getLocationFromAddress(this, "Toronto");
             this.setCalender();
+            this.getLocationFromAddress(this, mModel.getLocation());
             this.setRoute();
         }
         if ((String)arg == "new position") {

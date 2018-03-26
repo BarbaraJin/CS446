@@ -4,4 +4,5 @@
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="action_search_location">Search location</string>
     <string name="test">Goodluck</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
