@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/female"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@drawable/ic_female"
+        android:title="female"
+        android:visible="true" />
+    <item
+        android:id="@+id/male"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@drawable/ic_male"
+        android:title="male"
+        android:visible="true" />
+</menu>

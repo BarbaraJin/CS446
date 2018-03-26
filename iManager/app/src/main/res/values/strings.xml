@@ -4,4 +4,7 @@
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="action_search_location">Search location</string>
     <string name="test">Goodluck</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

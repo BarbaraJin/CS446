@@ -1,0 +1,153 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ziniuyimeixiang.imanager.FemaleClothFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageButton
+            android:id="@+id/dressButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="50dp"
+            android:background="@null"
+            android:src="@drawable/grey_dress_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageButton
+            android:id="@+id/skirtButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/dressButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="0dp"
+            android:background="@null"
+            android:src="@drawable/grey_round_skirt_button"
+            app:layout_constraintBottom_toBottomOf="@+id/dressButton"
+            app:layout_constraintStart_toEndOf="@+id/dressButton"
+            app:layout_constraintTop_toTopOf="@+id/dressButton"
+            app:layout_constraintVertical_bias="1.0" />
+
+
+        <ImageButton
+            android:id="@+id/tshirtButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/skirtButton"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="0dp"
+            android:background="@null"
+            android:src="@drawable/grey_tshirt_button"
+            app:layout_constraintBottom_toBottomOf="@+id/skirtButton"
+            app:layout_constraintStart_toEndOf="@+id/skirtButton"
+            app:layout_constraintTop_toTopOf="@+id/skirtButton"
+            app:layout_constraintVertical_bias="1.0" />
+
+
+        <ImageButton
+            android:id="@+id/leggingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="50dp"
+            android:background="@null"
+            android:src="@drawable/grey_legging_button"
+            app:layout_constraintEnd_toEndOf="@+id/dressButton"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/dressButton"
+            app:layout_constraintTop_toBottomOf="@+id/dressButton" />
+
+
+        <ImageButton
+            android:id="@+id/hoodiesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="0dp"
+            android:background="@null"
+            android:src="@drawable/grey_hoodies_button"
+            app:layout_constraintBottom_toBottomOf="@+id/leggingButton"
+            app:layout_constraintStart_toEndOf="@+id/leggingButton"
+            app:layout_constraintTop_toTopOf="@+id/leggingButton"
+            app:layout_constraintVertical_bias="1.0" />
+
+
+        <ImageButton
+            android:id="@+id/sweaterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="0dp"
+            android:background="@null"
+            android:src="@drawable/grey_sweater_button"
+            app:layout_constraintBottom_toBottomOf="@+id/hoodiesButton"
+            app:layout_constraintStart_toEndOf="@+id/hoodiesButton"
+            app:layout_constraintTop_toTopOf="@+id/hoodiesButton" />
+
+
+        <ImageButton
+            android:id="@+id/windProofJacketButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="50dp"
+            android:background="@null"
+            android:src="@drawable/grey_wind_proof_jacket_button"
+            app:layout_constraintEnd_toEndOf="@+id/leggingButton"
+            app:layout_constraintStart_toStartOf="@+id/leggingButton"
+            app:layout_constraintTop_toBottomOf="@+id/leggingButton" />
+
+
+        <ImageButton
+            android:id="@+id/femaleSpringCoatButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="0dp"
+            android:background="@null"
+            android:src="@drawable/grey_female_spring_coat_button"
+            app:layout_constraintBottom_toBottomOf="@+id/windProofJacketButton"
+            app:layout_constraintStart_toEndOf="@+id/windProofJacketButton"
+            app:layout_constraintTop_toTopOf="@+id/windProofJacketButton" />
+
+
+        <ImageButton
+            android:id="@+id/winterCoatButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="0dp"
+            android:background="@null"
+            android:src="@drawable/grey_round_winter_coat_button"
+            app:layout_constraintBottom_toBottomOf="@+id/femaleSpringCoatButton"
+            app:layout_constraintStart_toEndOf="@+id/femaleSpringCoatButton"
+            app:layout_constraintTop_toTopOf="@+id/femaleSpringCoatButton" />
+
+        <!--<ImageView-->
+            <!--android:id="@+id/winterCoatIcon"-->
+            <!--android:layout_width="55dp"-->
+            <!--android:layout_height="55dp"-->
+            <!--android:src="@drawable/winter_coat"-->
+            <!--app:layout_constraintBottom_toBottomOf="@+id/winterCoatButton"-->
+            <!--app:layout_constraintEnd_toEndOf="@+id/winterCoatButton"-->
+            <!--app:layout_constraintHorizontal_bias="0.5"-->
+            <!--app:layout_constraintStart_toStartOf="@+id/winterCoatButton"-->
+            <!--app:layout_constraintTop_toTopOf="@+id/winterCoatButton"-->
+            <!--app:layout_constraintVertical_bias="0.5" />-->
+
+        </android.support.constraint.ConstraintLayout>
+
+
+</FrameLayout>
