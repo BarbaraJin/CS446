@@ -30,7 +30,23 @@ import com.google.maps.model.Duration;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,6 +54,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
@@ -57,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         C_Button = findViewById(R.id.Cbutton);
         R_Button = findViewById(R.id.Trans);
         this.askP();
-        this.getLocationFromAddress(this, "Toronto");
+        mModel.route();
         this.getPosition();
         this.setCalender();
         this.setRoute();
@@ -175,30 +195,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
             mModel.curr_postion(longitude, latitude);
         }
     }
-    public void getLocationFromAddress(Context context,String strAddress) {
-
-        Geocoder coder = new Geocoder(context);
-        List<Address> address;
-        LatLng p1 = null;
-
-        try {
-            // May throw an IOException
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return;
-            }
-
-            Address location = address.get(0);
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
-
-        } catch (IOException ex) {
-
-            ex.printStackTrace();
-        }
-
-        mModel.setEvent_att(p1.lat);
-        mModel.setEvent_lon(p1.lng);
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -216,9 +212,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public void update(Observable o, Object arg) {
         if ((String)arg == "new event") {
-            //toronto should be replaced by the nearest event position
             this.setCalender();
-            this.getLocationFromAddress(this, mModel.getLocation());
+        }
+        if ((String)arg == "new route"){
+            mModel.route();
             this.setRoute();
         }
         if ((String)arg == "new position") {
