@@ -67,7 +67,7 @@ public class FemaleClothFragment extends Fragment implements Observer {
 
     private void updateClothes() {
         if (clothesData.getHoodies()){
-            hoodiesButton.setImageResource(R.drawable.blue_hoodies_button); 
+            hoodiesButton.setImageResource(R.drawable.blue_hoodies_button);
         }
         if (clothesData.getDress()){
             dressButton.setImageResource(R.drawable.blue_dress_button);
