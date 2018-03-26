@@ -4,32 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ziniuyimeixiang.imanager.ClothActivity"
-    >
-
-    <FrameLayout
-        android:id="@+id/clothFrame"
-        android:layout_width="0dp"
-        android:layout_height="500dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </FrameLayout>
-
+    tools:context="com.ziniuyimeixiang.imanager.ClothActivity">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="49dp"
-        android:layout_height="47dp"
-        android:layout_marginBottom="64dp"
-        android:layout_marginEnd="16dp"
-        android:clickable="true"
+        android:id="@+id/imageFloatingButton"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginBottom="12dp"
+        android:clickable="false"
         android:scaleType="center"
-        app:backgroundTint="@color/lightBlueColor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_action_name" />
+        android:visibility="gone"
+        app:backgroundTint="@color/littleDarkBlueColor"
+        app:layout_constraintBottom_toTopOf="@+id/homeFloatingButton"
+        app:layout_constraintEnd_toEndOf="@+id/homeFloatingButton"
+        app:layout_constraintStart_toStartOf="@+id/homeFloatingButton"
+        app:srcCompat="@drawable/ic_add_a_photo_white_24dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/homeFloatingButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="4dp"
+        android:clickable="false"
+        android:scaleType="center"
+        android:visibility="gone"
+        app:backgroundTint="@color/littleDarkBlueColor"
+        app:layout_constraintBottom_toTopOf="@+id/weatherFloatingButton"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
+        app:srcCompat="@drawable/home_icon" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/weatherFloatingButton"
@@ -46,18 +49,18 @@
         app:srcCompat="@drawable/temp_icon" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/homeFloatingButton"
-        android:layout_width="38dp"
-        android:layout_height="39dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginEnd="4dp"
-        android:clickable="false"
+        android:id="@+id/floatingActionButton"
+        android:layout_width="49dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="64dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
         android:scaleType="center"
-        android:visibility="gone"
-        app:backgroundTint="@color/littleDarkBlueColor"
-        app:layout_constraintBottom_toTopOf="@+id/weatherFloatingButton"
-        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
-        app:srcCompat="@drawable/home_icon" />
+        android:visibility="visible"
+        app:backgroundTint="@color/lightBlueColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_action_name" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/clothNav"
@@ -72,6 +75,27 @@
         app:menu="@menu/cloth_nav_menu">
 
     </android.support.design.widget.BottomNavigationView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/clothFrame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

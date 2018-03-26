@@ -3,6 +3,8 @@ package com.ziniuyimeixiang.imanager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -26,7 +28,7 @@ public class ClothActivity extends AppCompatActivity implements Observer {
 //
 //    private int lowTemp, highTemp, currentTemp, weatherCode, windSpeed;
 
-    private FloatingActionButton mainFloatingButton, weatherFloatingButton, homeFloatingButton;
+    private FloatingActionButton imageFloatingButton, mainFloatingButton, weatherFloatingButton, homeFloatingButton;
     private Boolean mainFabOpen;
 
     private Animation fabOpen, fabClose, fabRotateClock, fabRotateAntiClock;
@@ -110,6 +112,7 @@ public class ClothActivity extends AppCompatActivity implements Observer {
     private void initiateFloatingButton() {
         mainFloatingButton = findViewById(R.id.floatingActionButton);
         weatherFloatingButton = findViewById(R.id.weatherFloatingButton);
+        imageFloatingButton = findViewById(R.id.imageFloatingButton);
         homeFloatingButton = findViewById(R.id.homeFloatingButton);
 
         fabOpen = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.float_button_open);
@@ -136,6 +139,14 @@ public class ClothActivity extends AppCompatActivity implements Observer {
             }
         });
 
+        imageFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageImportBottomSheet bottomSheetDialog = new imageImportBottomSheet();
+                bottomSheetDialog.show(getSupportFragmentManager(),bottomSheetDialog.getTag());
+            }
+        });
+
         mainFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,6 +156,8 @@ public class ClothActivity extends AppCompatActivity implements Observer {
                     weatherFloatingButton.setVisibility(View.GONE);
                     homeFloatingButton.setClickable(false);
                     homeFloatingButton.setVisibility(View.GONE);
+                    imageFloatingButton.setClickable(false);
+                    imageFloatingButton.setVisibility(View.GONE);
                     mainFloatingButton.startAnimation(fabRotateAntiClock);
                     mainFabOpen = false;
                 }
@@ -153,6 +166,8 @@ public class ClothActivity extends AppCompatActivity implements Observer {
                     weatherFloatingButton.setVisibility(View.VISIBLE);
                     homeFloatingButton.setClickable(true);
                     homeFloatingButton.setVisibility(View.VISIBLE);
+                    imageFloatingButton.setClickable(true);
+                    imageFloatingButton.setVisibility(View.VISIBLE);
                     mainFloatingButton.startAnimation(fabRotateClock);
                     mainFabOpen = true;
                 }
