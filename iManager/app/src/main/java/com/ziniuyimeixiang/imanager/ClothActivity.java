@@ -20,11 +20,11 @@ import java.util.Observer;
 
 public class ClothActivity extends AppCompatActivity implements Observer {
 
-    WeatherData weatherData;
-    ClothesModel clothesData;
-
-
-    private int lowTemp, highTemp, currentTemp, weatherCode, windSpeed;
+//    WeatherData weatherData;
+//    ClothesModel clothesData;
+//
+//
+//    private int lowTemp, highTemp, currentTemp, weatherCode, windSpeed;
 
     private FloatingActionButton mainFloatingButton, weatherFloatingButton, homeFloatingButton;
     private Boolean mainFabOpen;
@@ -43,8 +43,8 @@ public class ClothActivity extends AppCompatActivity implements Observer {
         setContentView(R.layout.activity_wearing);
         getSupportActionBar().setTitle("Clothes");
 
-        initiateWeatherInfo();
-        initiateClothesInfo();
+//        initiateWeatherInfo();
+//        initiateClothesInfo();
 
         initiateFloatingButton();
         listenFABButton();
@@ -52,55 +52,55 @@ public class ClothActivity extends AppCompatActivity implements Observer {
         initiateTabButton();
         listenTabButton();
 
-        startClothTask();
+//        startClothTask();
     }
 
 
 
-    /**
-     * Clothes section
-     */
+//    /**
+//     * Clothes section
+//     */
+//
+//
+//    private void initiateClothesInfo() {
+//        clothesData = ClothesModel.getInstance();
+//        clothesData.addObserver(this);
+//
+//    }
+//
+//    private void changeClothes() {
+//        clothesData.changeClothesDependonTemp(currentTemp, windSpeed, weatherCode);
+//    }
+//
+//    private void updateClothes() {
+////        lowerCloth.setText(clothesData.getLowerCloth());
+////        upperCloth.setText(clothesData.getUpperCloth());
+//    }
+//
+//
+//    private void startClothTask() {
+//        updateWeather();
+//        changeClothes();
+//    }
 
 
-    private void initiateClothesInfo() {
-        clothesData = ClothesModel.getInstance();
-        clothesData.addObserver(this);
-
-    }
-
-    private void changeClothes() {
-        clothesData.changeClothesDependonTemp(currentTemp, windSpeed, weatherCode);
-    }
-
-    private void updateClothes() {
-//        lowerCloth.setText(clothesData.getLowerCloth());
-//        upperCloth.setText(clothesData.getUpperCloth());
-    }
-
-
-    private void startClothTask() {
-        updateWeather();
-        changeClothes();
-    }
-
-
-    /**
-     * weather section
-     */
-    private void initiateWeatherInfo() {
-        weatherData = WeatherData.getInstance();
-//        weatherData.addObserver(this);
-        lowTemp = 0;
-        highTemp = 0;
-    }
-
-    private void updateWeather() {
-        lowTemp = weatherData.getLowTemp();
-        highTemp = weatherData.getHighTemp();
-        currentTemp = weatherData.getCurrentTemp();
-        weatherCode = weatherData.getCurrentWeatherCode();
-        windSpeed = weatherData.getSpeed();
-    }
+//    /**
+//     * weather section
+//     */
+//    private void initiateWeatherInfo() {
+//        weatherData = WeatherData.getInstance();
+////        weatherData.addObserver(this);
+//        lowTemp = 0;
+//        highTemp = 0;
+//    }
+//
+//    private void updateWeather() {
+//        lowTemp = weatherData.getLowTemp();
+//        highTemp = weatherData.getHighTemp();
+//        currentTemp = weatherData.getCurrentTemp();
+//        weatherCode = weatherData.getCurrentWeatherCode();
+//        windSpeed = weatherData.getSpeed();
+//    }
 
 
     /**
@@ -165,19 +165,6 @@ public class ClothActivity extends AppCompatActivity implements Observer {
     /**
      * tab button section
      */
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == R.id.femaleCloth){
-//            isFemale = true;
-//            setContentView(R.layout.activity_wearing);
-//        }
-//        else if (item.getItemId() == R.id.maleCloth){
-//            isFemale = false;
-//            setContentView(R.layout.activity_male_cloth);
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
 
     private void listenTabButton() {
         clothNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -204,7 +191,6 @@ public class ClothActivity extends AppCompatActivity implements Observer {
         fragmentTransaction.replace(R.id.clothFrame, fragment).commit();
     }
 
-
     private void initiateTabButton() {
         clothNavigationView = findViewById(R.id.clothNav);
         clothFrameLayout = findViewById(R.id.clothFrame);
@@ -214,9 +200,14 @@ public class ClothActivity extends AppCompatActivity implements Observer {
     }
 
 
+    /**
+     *  update function
+     * @param observable
+     * @param o
+     */
     @Override
     public void update(Observable observable, Object o) {
-        updateClothes();
+//        updateClothes();
     }
 
 

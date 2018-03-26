@@ -6,14 +6,14 @@ package com.ziniuyimeixiang.imanager;
 
 public class ClothesModel extends Model {
 
-    String upperCloth;
-    String lowerCloth;
+    private String upperCloth;
+    private String lowerCloth;
 
     /* female */
-    Boolean dress, rompers, legging, skirts;
+    private Boolean dress, rompers, legging, skirts;
 
     /* both */
-    Boolean hoodies, jeans, pants, shorts, tShirt, longSleevedShirt, winterCoat, springCoat, windAndWaterProofJacket;
+    private Boolean hoodies, jeans, pants, shorts, tShirt, sweater, winterCoat, springCoat, windAndWaterProofJacket;
 
     /**
      * instance
@@ -143,46 +143,111 @@ public class ClothesModel extends Model {
         this.windAndWaterProofJacket = windAndWaterProofJacket;
     }
 
-    public Boolean getLongSleevedShirt() {
-        return longSleevedShirt;
+
+    public Boolean getSweater() {
+        return sweater;
     }
 
-    public void setLongSleevedShirt(Boolean longSleevedShirt) {
-        this.longSleevedShirt = longSleevedShirt;
+    public void setSweater(Boolean sweater) {
+        this.sweater = sweater;
     }
 
     /**
      * choose clothes
      */
 
-    public void changeClothesDependonTemp(int currentTemp, int windSpeed, int weatherCode){
+    public void changeFemaleClothesDependonTemp(int currentTemp, int windSpeed, int weatherCode){
+        setAllFalse();
         if (currentTemp < -20){
             winterCoat = true;
-            longSleevedShirt = true;
+            sweater = true;
             legging = true;
+        }
+        else if (currentTemp >= -20 && currentTemp <= 0){
+            winterCoat = true;
+            legging = true;
+            tShirt = true;
+        }
+        else if (currentTemp >= 0 && currentTemp <= 10){
+            if (windSpeed >= 24){
+                windAndWaterProofJacket = true;
+            }
+            else {
+                springCoat = true;
+            }
+            hoodies = true;
+            legging = true;
+        }
+        else if (currentTemp >= 10 && currentTemp <= 20){
+            if (windSpeed >= 24){
+                windAndWaterProofJacket = true;
+            }
+            tShirt = true;
+            legging = true;
+            rompers = true;
+        }
+        else if (currentTemp >= 20){
+            dress = true;
+            tShirt = true;
+            skirts = true;
+        }
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public void changeMaleClothesDependonTemp(int currentTemp, int windSpeed, int weatherCode){
+        setAllFalse();
+        if (currentTemp < -20){
+            winterCoat = true;
+            sweater = true;
             jeans = true;
         }
         else if (currentTemp >= -20 && currentTemp <= 0){
             winterCoat = true;
+            jeans = true;
+            tShirt = true;
         }
         else if (currentTemp >= 0 && currentTemp <= 10){
+            if (windSpeed >= 24){
+                windAndWaterProofJacket = true;
+            }
+            else {
+                springCoat = true;
+            }
             hoodies = true;
-            springCoat = true;
+            sweater = true;
             jeans = true;
         }
         else if (currentTemp >= 10 && currentTemp <= 20){
-            upperCloth = "T-shirt";
-            lowerCloth = "legging";
+            if (windSpeed >= 24){
+                windAndWaterProofJacket = true;
+            }
+            tShirt = true;
+            jeans = true;
         }
         else if (currentTemp >= 20){
-            upperCloth = "T-shirt or Tank top";
-            lowerCloth = "shorts or skirts";
+            tShirt = true;
+            shorts = true;
         }
-
-        //        Boolean dress, rompers, legging, skirts;
-//
-//        Boolean hoodies, jeans, pants, shorts, tShirt, longSleevedShirt, winterCoat, springCoat, windAndWaterProofJacket;
         setChanged();
         notifyObservers();
+    }
+
+
+    private void setAllFalse() {
+        dress = false;
+        rompers = false;
+        legging = false;
+        skirts = false;
+        hoodies = false;
+        jeans = false;
+        pants = false;
+        shorts = false;
+        tShirt = false;
+        sweater = false;
+        winterCoat = false;
+        springCoat = false;
+        windAndWaterProofJacket = false;
     }
 }
