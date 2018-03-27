@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -42,6 +43,7 @@ public class MaleClothFragment extends Fragment implements Observer {
         initiateWeatherInfo();
         initiateClothesInfo();
         initiateViewFromFrament(view);
+        buttonListener();
 
         startClothTask();
 
@@ -133,9 +135,71 @@ public class MaleClothFragment extends Fragment implements Observer {
         winterCoatButton = view.findViewById(R.id.winterCoatButton);
     }
 
+    private void buttonListener() {
+        hoodiesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clothesData.getAllImages("hoodie");
+            }
+        });
+        leggingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clothesData.getAllImages("legging");
+            }
+        });
+        jeansButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clothesData.getAllImages("jeans");
+            }
+        });
+        springCoatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clothesData.getAllImages("spring_coat");
+            }
+        });
+        shortsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clothesData.getAllImages("shorts");
+            }
+        });
+        sweaterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clothesData.getAllImages("sweater");
+            }
+        });
+        tshirtButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clothesData.getAllImages("t_shirt");
+            }
+        });
+        windProofJacketButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clothesData.getAllImages("wind_proof_jacket");
+            }
+        });
+        winterCoatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clothesData.getAllImages("winter_coat");
+            }
+        });
+    }
+
     @Override
     public void update(Observable observable, Object o) {
         updateClothes();
+    }
+
+    /* test use */
+    private void makeToast(String s) {
+        Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
     }
 
 }

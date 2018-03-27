@@ -1,8 +1,12 @@
 package com.ziniuyimeixiang.imanager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,20 +17,23 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 public class ClothActivity extends AppCompatActivity implements Observer {
 
 //    WeatherData weatherData;
-//    ClothesModel clothesData;
+    ClothesModel clothesData;
 //
 //
 //    private int lowTemp, highTemp, currentTemp, weatherCode, windSpeed;
 
-    private FloatingActionButton mainFloatingButton, weatherFloatingButton, homeFloatingButton;
+    private FloatingActionButton imageFloatingButton, mainFloatingButton, weatherFloatingButton, homeFloatingButton;
     private Boolean mainFabOpen;
 
     private Animation fabOpen, fabClose, fabRotateClock, fabRotateAntiClock;
@@ -37,6 +44,9 @@ public class ClothActivity extends AppCompatActivity implements Observer {
     private FemaleClothFragment femaleClothFragment;
     private MaleClothFragment maleClothFragment;
 
+    /* layout param */
+//    private GridView photoGridLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +54,9 @@ public class ClothActivity extends AppCompatActivity implements Observer {
         getSupportActionBar().setTitle("Clothes");
 
 //        initiateWeatherInfo();
-//        initiateClothesInfo();
+        initiateClothesInfo();
 
+//        initiateLayout();
         initiateFloatingButton();
         listenFABButton();
 
@@ -55,18 +66,27 @@ public class ClothActivity extends AppCompatActivity implements Observer {
 //        startClothTask();
     }
 
+    /**
+     * Layout section
+     */
+
+    private void initiateLayout() {
+//        photoGridLayout = findViewById(R.id.photoGridLayout);
+    }
 
 
-//    /**
-//     * Clothes section
-//     */
-//
-//
-//    private void initiateClothesInfo() {
-//        clothesData = ClothesModel.getInstance();
-//        clothesData.addObserver(this);
-//
-//    }
+    /**
+     * Clothes section
+     */
+
+    private void initiateClothesInfo() {
+        clothesData = ClothesModel.getInstance();
+        DbHelper dbHelper = new DbHelper(getApplicationContext());
+        clothesData.setDbHelper(dbHelper);
+//        clothesData.initiateDbHelper(getApplicationContext());
+        clothesData.addObserver(this);
+
+    }
 //
 //    private void changeClothes() {
 //        clothesData.changeClothesDependonTemp(currentTemp, windSpeed, weatherCode);
@@ -110,6 +130,7 @@ public class ClothActivity extends AppCompatActivity implements Observer {
     private void initiateFloatingButton() {
         mainFloatingButton = findViewById(R.id.floatingActionButton);
         weatherFloatingButton = findViewById(R.id.weatherFloatingButton);
+        imageFloatingButton = findViewById(R.id.imageFloatingButton);
         homeFloatingButton = findViewById(R.id.homeFloatingButton);
 
         fabOpen = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.float_button_open);
@@ -136,6 +157,14 @@ public class ClothActivity extends AppCompatActivity implements Observer {
             }
         });
 
+        imageFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageImportBottomSheet bottomSheetDialog = new imageImportBottomSheet();
+                bottomSheetDialog.show(getSupportFragmentManager(),bottomSheetDialog.getTag());
+            }
+        });
+
         mainFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,6 +174,8 @@ public class ClothActivity extends AppCompatActivity implements Observer {
                     weatherFloatingButton.setVisibility(View.GONE);
                     homeFloatingButton.setClickable(false);
                     homeFloatingButton.setVisibility(View.GONE);
+                    imageFloatingButton.setClickable(false);
+                    imageFloatingButton.setVisibility(View.GONE);
                     mainFloatingButton.startAnimation(fabRotateAntiClock);
                     mainFabOpen = false;
                 }
@@ -153,6 +184,8 @@ public class ClothActivity extends AppCompatActivity implements Observer {
                     weatherFloatingButton.setVisibility(View.VISIBLE);
                     homeFloatingButton.setClickable(true);
                     homeFloatingButton.setVisibility(View.VISIBLE);
+                    imageFloatingButton.setClickable(true);
+                    imageFloatingButton.setVisibility(View.VISIBLE);
                     mainFloatingButton.startAnimation(fabRotateClock);
                     mainFabOpen = true;
                 }
@@ -199,6 +232,17 @@ public class ClothActivity extends AppCompatActivity implements Observer {
         setFragment(femaleClothFragment);
     }
 
+    /**
+     * show photos
+     */
+
+    private void updatePhoto() {
+        GridView photoGridLayout = findViewById(R.id.photoGridLayout);
+        ArrayList<Bitmap> images = clothesData.getPhotos();
+        GridLayoutAdapter adapter = new GridLayoutAdapter(this, images, 540);
+        photoGridLayout.setAdapter(adapter);
+    }
+
 
     /**
      *  update function
@@ -207,7 +251,9 @@ public class ClothActivity extends AppCompatActivity implements Observer {
      */
     @Override
     public void update(Observable observable, Object o) {
-//        updateClothes();
+        if (clothesData.getIfGetImages()){
+            updatePhoto();
+        }
     }
 
 

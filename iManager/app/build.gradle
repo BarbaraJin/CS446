@@ -35,4 +35,5 @@ dependencies {
     implementation 'com.android.support:support-compat:26.1.0'
 
     compile 'com.google.maps:google-maps-services:0.2.5'
+    compile 'com.afollestad.material-dialogs:core:0.9.4.5'
 }

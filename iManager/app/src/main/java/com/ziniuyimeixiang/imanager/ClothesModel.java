@@ -1,5 +1,17 @@
 package com.ziniuyimeixiang.imanager;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.widget.Toast;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Created by j_mei on 2018-03-21.
  */
@@ -15,6 +27,28 @@ public class ClothesModel extends Model {
     /* both */
     private Boolean hoodies, jeans, pants, shorts, tShirt, sweater, winterCoat, springCoat, windAndWaterProofJacket;
 
+    /* cloth type */
+    private final String winterCoatString = "winter_coat";
+    private final String sweaterString = "sweater";
+    private final String leggingString = "legging";
+    private final String tShirtString = "t_shirt";
+    private final String windProofJacketString = "wind_proof_jacket";
+    private final String springCoatString = "spring_coat";
+    private final String hoodieString = "hoodie";
+    private final String dressString = "dress";
+    private final String skirtString = "skirt";
+    private final String jeansString = "jeans";
+    private final String shortsString = "shorts";
+
+    private List<byte[]> images;
+    private ArrayList<Bitmap> photos;
+
+    Context context;
+
+    /* database */
+    private DbHelper dbHelper;
+    private Boolean ifGetImages;
+
     /**
      * instance
      */
@@ -29,6 +63,49 @@ public class ClothesModel extends Model {
      */
 
     public ClothesModel() {
+        images = new ArrayList<>();
+        ifGetImages = false;
+    }
+
+
+    public ArrayList<Bitmap> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(ArrayList<Bitmap> photos) {
+        this.photos = photos;
+    }
+
+    public Boolean getIfGetImages() {
+        return ifGetImages;
+    }
+
+    public void setIfGetImages(Boolean ifGetImages) {
+        this.ifGetImages = ifGetImages;
+    }
+
+    public DbHelper getDbHelper() {
+        return dbHelper;
+    }
+
+    public void setDbHelper(DbHelper dbHelper) {
+        this.dbHelper = dbHelper;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public List<byte[]> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<byte[]> images) {
+        this.images = images;
     }
 
     public String getUpperCloth() {
@@ -250,4 +327,95 @@ public class ClothesModel extends Model {
         springCoat = false;
         windAndWaterProofJacket = false;
     }
+
+    /**
+     * Database section
+     */
+
+    public int saveImage(String clothType, Bitmap photo){
+        byte[] image = converBitmapToByteArray(photo);
+        String tableName = checkDbTableName(clothType);
+        if (tableName.equals("")){
+            return 0;
+        }
+        dbHelper.addToDb(tableName, image);
+        return 1;
+    }
+
+    public void getAllImages(String clothType){
+        ifGetImages = false;
+        images = dbHelper.getAllImage(clothType);
+        photos = convertAllImagesToBitmap(images);
+        if (photos.size() != 0){
+            ifGetImages = true;
+        }
+        setChanged();
+        notifyObservers();
+    }
+
+    private ArrayList<Bitmap> convertAllImagesToBitmap(List<byte[]> images) {
+        ArrayList<Bitmap> tempPhotos = new ArrayList<Bitmap>();
+        Iterator<byte[]> iterator = images.iterator();
+        while (iterator.hasNext()){
+            byte[] tempImage = iterator.next();
+            Bitmap photo = convertByteArrayToBitmap(tempImage);
+            tempPhotos.add(photo);
+        }
+        return tempPhotos;
+    }
+
+
+    private byte[] converBitmapToByteArray(Bitmap photo) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
+
+    private Bitmap convertByteArrayToBitmap(byte[] barray){
+        ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(barray);
+        Bitmap bitmap = BitmapFactory.decodeStream(arrayInputStream);
+        return bitmap;
+    }
+
+    private String checkDbTableName(String clothType){
+        String answer = "";
+        if (clothType.equals("winter coat")){
+            answer = winterCoatString;
+        }
+        else if (clothType.equals("sweater")){
+            answer = sweaterString;
+        }
+        else if (clothType.equals("legging")){
+            answer = leggingString;
+        }
+        else if (clothType.equals("T-shirt")){
+            answer = tShirtString;
+        }
+        else if (clothType.equals("wind proof jacket")){
+            answer = windProofJacketString;
+        }
+        else if (clothType.equals("spring coat")){
+            answer = springCoatString;
+        }
+        else if (clothType.equals("hoodie")){
+            answer = hoodieString;
+        }
+        else if (clothType.equals("dress")){
+            answer = dressString;
+        }
+        else if (clothType.equals("skirt")){
+            answer = skirtString;
+        }
+        else if (clothType.equals("jeans")){
+            answer = jeansString;
+        }
+        else if (clothType.equals("shorts")){
+            answer = shortsString;
+        }
+        return answer;
+    }
+
+
+
 }

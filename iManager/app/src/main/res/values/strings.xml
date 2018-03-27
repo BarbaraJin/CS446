@@ -7,4 +7,18 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+    <string-array name="cloth_type">
+        <item>winter coat</item>
+        <item>sweater</item>
+        <item>legging</item>
+        <item>T-shirt</item>
+        <item>wind proof jacket</item>
+        <item>spring coat</item>
+        <item>hoodie</item>
+        <item>dress</item>
+        <item>skirt</item>
+        <item>jeans</item>
+        <item>shorts</item>
+    </string-array>
 </resources>
