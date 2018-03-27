@@ -2,10 +2,14 @@ package com.ziniuyimeixiang.imanager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -37,11 +41,13 @@ public class ClothesModel extends Model {
     private final String shortsString = "shorts";
 
     private List<byte[]> images;
+    private ArrayList<Bitmap> photos;
 
     Context context;
 
     /* database */
     private DbHelper dbHelper;
+    private Boolean ifGetImages;
 
     /**
      * instance
@@ -58,8 +64,25 @@ public class ClothesModel extends Model {
 
     public ClothesModel() {
         images = new ArrayList<>();
+        ifGetImages = false;
     }
 
+
+    public ArrayList<Bitmap> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(ArrayList<Bitmap> photos) {
+        this.photos = photos;
+    }
+
+    public Boolean getIfGetImages() {
+        return ifGetImages;
+    }
+
+    public void setIfGetImages(Boolean ifGetImages) {
+        this.ifGetImages = ifGetImages;
+    }
 
     public DbHelper getDbHelper() {
         return dbHelper;
@@ -309,43 +332,38 @@ public class ClothesModel extends Model {
      * Database section
      */
 
-    public void saveImage(String clothType, Bitmap photo){
+    public int saveImage(String clothType, Bitmap photo){
         byte[] image = converBitmapToByteArray(photo);
-        if (clothType.equals("winter coat")){
-            dbHelper.addToDb(winterCoatString, image);
+        String tableName = checkDbTableName(clothType);
+        if (tableName.equals("")){
+            return 0;
         }
-        else if (clothType.equals("sweater")){
-            dbHelper.addToDb(sweaterString, image);
-        }
-        else if (clothType.equals("legging")){
-            dbHelper.addToDb(leggingString, image);
-        }
-        else if (clothType.equals("T-shirt")){
-            dbHelper.addToDb(tShirtString, image);
-        }
-        else if (clothType.equals("wind proof jacket")){
-            dbHelper.addToDb(windProofJacketString, image);
-        }
-        else if (clothType.equals("spring coat")){
-            dbHelper.addToDb(springCoatString, image);
-        }
-        else if (clothType.equals("hoodie")){
-            dbHelper.addToDb(hoodieString, image);
-        }
-        else if (clothType.equals("dress")){
-            dbHelper.addToDb(dressString, image);
-        }
-        else if (clothType.equals("skirt")){
-            dbHelper.addToDb(skirtString, image);
-        }
-        else if (clothType.equals("jeans")){
-            dbHelper.addToDb(jeansString, image);
-        }
-        else if (clothType.equals("shorts")){
-            dbHelper.addToDb(shortsString, image);
-        }
-
+        dbHelper.addToDb(tableName, image);
+        return 1;
     }
+
+    public void getAllImages(String clothType){
+        ifGetImages = false;
+        images = dbHelper.getAllImage(clothType);
+        photos = convertAllImagesToBitmap(images);
+        if (photos.size() != 0){
+            ifGetImages = true;
+        }
+        setChanged();
+        notifyObservers();
+    }
+
+    private ArrayList<Bitmap> convertAllImagesToBitmap(List<byte[]> images) {
+        ArrayList<Bitmap> tempPhotos = new ArrayList<Bitmap>();
+        Iterator<byte[]> iterator = images.iterator();
+        while (iterator.hasNext()){
+            byte[] tempImage = iterator.next();
+            Bitmap photo = convertByteArrayToBitmap(tempImage);
+            tempPhotos.add(photo);
+        }
+        return tempPhotos;
+    }
+
 
     private byte[] converBitmapToByteArray(Bitmap photo) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -354,19 +372,50 @@ public class ClothesModel extends Model {
         return byteArray;
     }
 
-//    private void startDbTask() {
-//        Dbtask dbtask = new Dbtask();
-//        dbtask.execute(new String[]{});
-//    }
-//
-//    private class Dbtask extends AsyncTask<String, Void, Void> {
-//
-//        @Override
-//        protected Void doInBackground(String... strings) {
-//            dbHelper = new DbHelper(context);
-//            return null;
-//        }
-//    }
+    private Bitmap convertByteArrayToBitmap(byte[] barray){
+        ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(barray);
+        Bitmap bitmap = BitmapFactory.decodeStream(arrayInputStream);
+        return bitmap;
+    }
+
+    private String checkDbTableName(String clothType){
+        String answer = "";
+        if (clothType.equals("winter coat")){
+            answer = winterCoatString;
+        }
+        else if (clothType.equals("sweater")){
+            answer = sweaterString;
+        }
+        else if (clothType.equals("legging")){
+            answer = leggingString;
+        }
+        else if (clothType.equals("T-shirt")){
+            answer = tShirtString;
+        }
+        else if (clothType.equals("wind proof jacket")){
+            answer = windProofJacketString;
+        }
+        else if (clothType.equals("spring coat")){
+            answer = springCoatString;
+        }
+        else if (clothType.equals("hoodie")){
+            answer = hoodieString;
+        }
+        else if (clothType.equals("dress")){
+            answer = dressString;
+        }
+        else if (clothType.equals("skirt")){
+            answer = skirtString;
+        }
+        else if (clothType.equals("jeans")){
+            answer = jeansString;
+        }
+        else if (clothType.equals("shorts")){
+            answer = shortsString;
+        }
+        return answer;
+    }
+
 
 
 }

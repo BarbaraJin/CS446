@@ -2,6 +2,7 @@ package com.ziniuyimeixiang.imanager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetDialog;
@@ -16,8 +17,11 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -40,6 +44,9 @@ public class ClothActivity extends AppCompatActivity implements Observer {
     private FemaleClothFragment femaleClothFragment;
     private MaleClothFragment maleClothFragment;
 
+    /* layout param */
+//    private GridView photoGridLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +56,7 @@ public class ClothActivity extends AppCompatActivity implements Observer {
 //        initiateWeatherInfo();
         initiateClothesInfo();
 
+//        initiateLayout();
         initiateFloatingButton();
         listenFABButton();
 
@@ -58,12 +66,18 @@ public class ClothActivity extends AppCompatActivity implements Observer {
 //        startClothTask();
     }
 
+    /**
+     * Layout section
+     */
+
+    private void initiateLayout() {
+//        photoGridLayout = findViewById(R.id.photoGridLayout);
+    }
 
 
     /**
      * Clothes section
      */
-
 
     private void initiateClothesInfo() {
         clothesData = ClothesModel.getInstance();
@@ -218,6 +232,17 @@ public class ClothActivity extends AppCompatActivity implements Observer {
         setFragment(femaleClothFragment);
     }
 
+    /**
+     * show photos
+     */
+
+    private void updatePhoto() {
+        GridView photoGridLayout = findViewById(R.id.photoGridLayout);
+        ArrayList<Bitmap> images = clothesData.getPhotos();
+        GridLayoutAdapter adapter = new GridLayoutAdapter(this, images, 540);
+        photoGridLayout.setAdapter(adapter);
+    }
+
 
     /**
      *  update function
@@ -226,7 +251,9 @@ public class ClothActivity extends AppCompatActivity implements Observer {
      */
     @Override
     public void update(Observable observable, Object o) {
-//        updateClothes();
+        if (clothesData.getIfGetImages()){
+            updatePhoto();
+        }
     }
 
 

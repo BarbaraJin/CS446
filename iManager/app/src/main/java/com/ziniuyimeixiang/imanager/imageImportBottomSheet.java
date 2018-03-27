@@ -133,7 +133,13 @@ public class imageImportBottomSheet extends BottomSheetDialogFragment implements
             public void onClick(View view) {
                 selectedClothType = chooseImageClothTypeSpinner.getSelectedItem().toString();
                 if (tempPhoto != null){
-                    clothesData.saveImage(selectedClothType, tempPhoto);
+                    int check = clothesData.saveImage(selectedClothType, tempPhoto);
+                    if (check == 1){
+                        makeToast("saved image successfully");
+                    }
+                    else {
+                        makeToast("can't find table name");
+                    }
                 }
                 else{
                     makeToast("you didn't select photo");
