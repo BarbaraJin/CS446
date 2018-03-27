@@ -1,5 +1,13 @@
 package com.ziniuyimeixiang.imanager;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by j_mei on 2018-03-21.
  */
@@ -15,6 +23,26 @@ public class ClothesModel extends Model {
     /* both */
     private Boolean hoodies, jeans, pants, shorts, tShirt, sweater, winterCoat, springCoat, windAndWaterProofJacket;
 
+    /* cloth type */
+    private final String winterCoatString = "winter_coat";
+    private final String sweaterString = "sweater";
+    private final String leggingString = "legging";
+    private final String tShirtString = "t_shirt";
+    private final String windProofJacketString = "wind_proof_jacket";
+    private final String springCoatString = "spring_coat";
+    private final String hoodieString = "hoodie";
+    private final String dressString = "dress";
+    private final String skirtString = "skirt";
+    private final String jeansString = "jeans";
+    private final String shortsString = "shorts";
+
+    private List<byte[]> images;
+
+    Context context;
+
+    /* database */
+    private DbHelper dbHelper;
+
     /**
      * instance
      */
@@ -29,6 +57,32 @@ public class ClothesModel extends Model {
      */
 
     public ClothesModel() {
+        images = new ArrayList<>();
+    }
+
+
+    public DbHelper getDbHelper() {
+        return dbHelper;
+    }
+
+    public void setDbHelper(DbHelper dbHelper) {
+        this.dbHelper = dbHelper;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public List<byte[]> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<byte[]> images) {
+        this.images = images;
     }
 
     public String getUpperCloth() {
@@ -250,4 +304,69 @@ public class ClothesModel extends Model {
         springCoat = false;
         windAndWaterProofJacket = false;
     }
+
+    /**
+     * Database section
+     */
+
+    public void saveImage(String clothType, Bitmap photo){
+        byte[] image = converBitmapToByteArray(photo);
+        if (clothType.equals("winter coat")){
+            dbHelper.addToDb(winterCoatString, image);
+        }
+        else if (clothType.equals("sweater")){
+            dbHelper.addToDb(sweaterString, image);
+        }
+        else if (clothType.equals("legging")){
+            dbHelper.addToDb(leggingString, image);
+        }
+        else if (clothType.equals("T-shirt")){
+            dbHelper.addToDb(tShirtString, image);
+        }
+        else if (clothType.equals("wind proof jacket")){
+            dbHelper.addToDb(windProofJacketString, image);
+        }
+        else if (clothType.equals("spring coat")){
+            dbHelper.addToDb(springCoatString, image);
+        }
+        else if (clothType.equals("hoodie")){
+            dbHelper.addToDb(hoodieString, image);
+        }
+        else if (clothType.equals("dress")){
+            dbHelper.addToDb(dressString, image);
+        }
+        else if (clothType.equals("skirt")){
+            dbHelper.addToDb(skirtString, image);
+        }
+        else if (clothType.equals("jeans")){
+            dbHelper.addToDb(jeansString, image);
+        }
+        else if (clothType.equals("shorts")){
+            dbHelper.addToDb(shortsString, image);
+        }
+
+    }
+
+    private byte[] converBitmapToByteArray(Bitmap photo) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
+
+//    private void startDbTask() {
+//        Dbtask dbtask = new Dbtask();
+//        dbtask.execute(new String[]{});
+//    }
+//
+//    private class Dbtask extends AsyncTask<String, Void, Void> {
+//
+//        @Override
+//        protected Void doInBackground(String... strings) {
+//            dbHelper = new DbHelper(context);
+//            return null;
+//        }
+//    }
+
+
 }

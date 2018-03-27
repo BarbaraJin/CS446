@@ -39,6 +39,9 @@ public class imageImportBottomSheet extends BottomSheetDialogFragment implements
 
     private View view;
 
+    /* get Model to send info */
+    private ClothesModel clothesData;
+
     /* view param */
     private Button cameraButton, galleryButton, imageIgnoreButton, imageSetButton;
     private ImageView selectedImageView;
@@ -46,7 +49,7 @@ public class imageImportBottomSheet extends BottomSheetDialogFragment implements
     private  ArrayAdapter<String> spinnerAdapter;
 
     /* user input param */
-    private String setedClothType;
+    private String selectedClothType;
     Bitmap tempPhoto;
 
     /* camera request number */
@@ -62,8 +65,18 @@ public class imageImportBottomSheet extends BottomSheetDialogFragment implements
         view = View.inflate(getContext(), R.layout.image_import_bottom_sheet, null);
         dialog.setContentView(view);
 
+        initiateClothesInfo();
         initiateItemOnView();
         itemOnClickListener();
+    }
+
+    /**
+     * Clothes section
+     */
+
+
+    private void initiateClothesInfo() {
+        clothesData = ClothesModel.getInstance();
     }
 
 
@@ -110,14 +123,22 @@ public class imageImportBottomSheet extends BottomSheetDialogFragment implements
         imageIgnoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                tempPhoto = null;
+                dismiss();
             }
         });
 
         imageSetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                selectedClothType = chooseImageClothTypeSpinner.getSelectedItem().toString();
+                if (tempPhoto != null){
+                    clothesData.saveImage(selectedClothType, tempPhoto);
+                }
+                else{
+                    makeToast("you didn't select photo");
+                }
+                dismiss();
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.ziniuyimeixiang.imanager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -23,7 +24,7 @@ import java.util.Observer;
 public class ClothActivity extends AppCompatActivity implements Observer {
 
 //    WeatherData weatherData;
-//    ClothesModel clothesData;
+    ClothesModel clothesData;
 //
 //
 //    private int lowTemp, highTemp, currentTemp, weatherCode, windSpeed;
@@ -46,7 +47,7 @@ public class ClothActivity extends AppCompatActivity implements Observer {
         getSupportActionBar().setTitle("Clothes");
 
 //        initiateWeatherInfo();
-//        initiateClothesInfo();
+        initiateClothesInfo();
 
         initiateFloatingButton();
         listenFABButton();
@@ -59,16 +60,19 @@ public class ClothActivity extends AppCompatActivity implements Observer {
 
 
 
-//    /**
-//     * Clothes section
-//     */
-//
-//
-//    private void initiateClothesInfo() {
-//        clothesData = ClothesModel.getInstance();
-//        clothesData.addObserver(this);
-//
-//    }
+    /**
+     * Clothes section
+     */
+
+
+    private void initiateClothesInfo() {
+        clothesData = ClothesModel.getInstance();
+        DbHelper dbHelper = new DbHelper(getApplicationContext());
+        clothesData.setDbHelper(dbHelper);
+//        clothesData.initiateDbHelper(getApplicationContext());
+        clothesData.addObserver(this);
+
+    }
 //
 //    private void changeClothes() {
 //        clothesData.changeClothesDependonTemp(currentTemp, windSpeed, weatherCode);
