@@ -4,35 +4,24 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.location.Location;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -41,13 +30,9 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceFilter;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
 public class Weather extends AppCompatActivity implements Observer {
 
@@ -60,14 +45,22 @@ public class Weather extends AppCompatActivity implements Observer {
     private TextView visibility;
     private TextView sunset;
     private TextView sunrise;
+    private TextView location, hardTemperature, hardWind, hardVisibility, hardHuminidity, hardSunrise, hardSunset;
     private Bitmap bitmapIcon;
 
-    WeatherData weatherData = new WeatherData();
+    WeatherData weatherData;
 
     protected GeoDataClient mGeoDataClient;
     protected PlaceDetectionClient mPlaceDetectionClient;
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
+    private FloatingActionButton mainFloatingButton, clothFloatingButton, homeFloatingButton;
+    private Boolean mainFabOpen;
+
+    private ConstraintLayout constraintLayout;
+    private int weatherCode;
+
+    private Animation fabOpen, fabClose, fabRotateClock, fabRotateAntiClock;
 
     /**
      * do weather task of default city
@@ -80,6 +73,7 @@ public class Weather extends AppCompatActivity implements Observer {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        weatherData = WeatherData.getInstance();
         weatherData.addObserver(this);
 
         mGeoDataClient = Places.getGeoDataClient(this, null);
@@ -94,6 +88,18 @@ public class Weather extends AppCompatActivity implements Observer {
         visibility = (TextView) findViewById(R.id.visibilityValue);
         sunset = (TextView) findViewById(R.id.sunsetValue);
         sunrise = (TextView) findViewById(R.id.sunriseValue);
+        location = findViewById(R.id.locationText);
+        hardTemperature = findViewById(R.id.hardcodeTemperatureTextText);
+        hardWind = findViewById(R.id.hardcodeWindTextText);
+        hardVisibility = findViewById(R.id.hardcodeVisibilityText);
+        hardHuminidity = findViewById(R.id.hardcodeHumidityText);
+        hardSunrise = findViewById(R.id.hardcodeSunriseText);
+        hardSunset = findViewById(R.id.hardcodeSunsetText);
+
+        constraintLayout = findViewById(R.id.weatherConstraintLayout);
+
+        initiateFloatingButton();
+        listenFABButton();
 
         /* check if network is available */
         if (isNetworkConnected(Weather.this)){
@@ -189,9 +195,9 @@ public class Weather extends AppCompatActivity implements Observer {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-//                String cityRegionString = place.getName().toString();
                 String cityRegionString = place.getAddress().toString();
 
+                defaultLocationDialog(this, cityRegionString);
                 /* before get json, check network*/
                 if (isNetworkConnected(Weather.this)){
                     doWeatherTask(cityRegionString);
@@ -210,6 +216,27 @@ public class Weather extends AppCompatActivity implements Observer {
         }
     }
 
+    public void defaultLocationDialog(Context c, final String typedInLocation) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(c);
+        alertBuilder.setTitle("default location");
+        alertBuilder.setMessage("Do you want to set this to the default location?");
+
+        alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                weatherData.setDefaultCityRegion(typedInLocation);
+            }
+        });
+
+        alertBuilder.setNegativeButton("ignore", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // do nothing
+            }
+        });
+        alertBuilder.show();
+    }
+
     /**
      * if change city, do weather task: fetch data, change UI
      * @param city
@@ -224,6 +251,73 @@ public class Weather extends AppCompatActivity implements Observer {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * floating button section
+     */
+
+
+    private void initiateFloatingButton() {
+        mainFloatingButton = findViewById(R.id.floatingActionButton);
+        clothFloatingButton = findViewById(R.id.weatherFloatingButton);
+        homeFloatingButton = findViewById(R.id.homeFloatingButton);
+
+        fabOpen = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.float_button_open);
+        fabClose = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.float_button_close);
+        fabRotateClock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise_45);
+        fabRotateAntiClock = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_anticlockwise_45);
+        mainFabOpen = false;
+    }
+
+    public void listenFABButton(){
+        clothFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent wearingIntent = new Intent(Weather.this, ClothActivity.class);
+                startActivity(wearingIntent);
+            }
+        });
+
+        homeFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mainIntent = new Intent(Weather.this, MainActivity.class);
+                startActivity(mainIntent);
+            }
+        });
+
+        mainFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(mainFabOpen){
+                    clothFloatingButton.setClickable(false);
+                    clothFloatingButton.setVisibility(View.GONE);
+                    homeFloatingButton.setClickable(false);
+                    homeFloatingButton.setVisibility(View.GONE);
+                    mainFloatingButton.startAnimation(fabRotateAntiClock);
+                    mainFabOpen = false;
+                }
+                else{
+                    clothFloatingButton.setClickable(true);
+                    clothFloatingButton.setVisibility(View.VISIBLE);
+                    homeFloatingButton.setClickable(true);
+                    homeFloatingButton.setVisibility(View.VISIBLE);
+                    mainFloatingButton.startAnimation(fabRotateClock);
+                    mainFabOpen = true;
+                }
+
+            }
+        });
+
+    }
+
+
+
+    /**
+     * update function
+     * @param o
+     * @param arg
+     */
     public void update(Observable o, Object arg) {
         cityRegion.setText(weatherData.getCity() + ", " + weatherData.getRegion());
         temperature.setText(weatherData.getCurrentTemp() + "°C");
@@ -234,6 +328,71 @@ public class Weather extends AppCompatActivity implements Observer {
         sunset.setText(weatherData.getSunset());
         sunrise.setText(weatherData.getSunrise());
         weatherIcon.setImageBitmap(weatherData.getWeatherIcon());
+        weatherCode = weatherData.getCurrentWeatherCode();
+        updateBackground();
+    }
+
+    private void updateBackground() {
+        if (weatherCode == 3 || weatherCode == 4 || weatherCode == 45|| weatherCode == 47 || (weatherCode >=37 && weatherCode <= 39)){
+            constraintLayout.setBackgroundResource(R.drawable.thunder);
+        }
+        else if (weatherCode == 5 || weatherCode == 7 || weatherCode == 46 || (weatherCode >=13 && weatherCode <= 16) || (weatherCode >=41 && weatherCode <= 43)){
+            constraintLayout.setBackgroundResource(R.drawable.snow);
+        }
+        else if (weatherCode == 6 || (weatherCode >=8 && weatherCode <= 12) || weatherCode == 35 || weatherCode == 40){
+            constraintLayout.setBackgroundResource(R.drawable.rain);
+        }
+        else if (weatherCode == 17 || weatherCode == 18){
+            constraintLayout.setBackgroundResource(R.drawable.hail);
+        }
+        else if (weatherCode >=19 && weatherCode <= 22){
+            constraintLayout.setBackgroundResource(R.drawable.foggy);
+        }
+        else if ((weatherCode >=26 && weatherCode <= 30) || weatherCode == 44){
+            constraintLayout.setBackgroundResource(R.drawable.cloud);
+        }
+        else{
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+            if (hour>= 7 && hour<=19){
+                constraintLayout.setBackgroundResource(R.drawable.day);
+            }
+            else{
+                constraintLayout.setBackgroundResource(R.drawable.night);
+                temperature.setTextColor(Color.WHITE);
+                highLowTemp.setTextColor(Color.WHITE); 
+                cityRegion.setTextColor(Color.WHITE);
+                wind.setTextColor(Color.WHITE);
+                humidity.setTextColor(Color.WHITE);
+                visibility.setTextColor(Color.WHITE);
+                sunset.setTextColor(Color.WHITE);
+                sunrise.setTextColor(Color.WHITE);
+                location.setTextColor(Color.WHITE);
+                hardTemperature.setTextColor(Color.WHITE);
+                hardWind.setTextColor(Color.WHITE);
+                hardVisibility.setTextColor(Color.WHITE);
+                hardHuminidity.setTextColor(Color.WHITE);
+                hardSunrise.setTextColor(Color.WHITE);
+                hardSunset.setTextColor(Color.WHITE);
+                return;
+            }
+        }
+        temperature.setTextColor(Color.BLACK);
+        highLowTemp.setTextColor(Color.BLACK);
+        cityRegion.setTextColor(Color.BLACK);
+        wind.setTextColor(Color.BLACK);
+        humidity.setTextColor(Color.BLACK);
+        visibility.setTextColor(Color.BLACK);
+        sunset.setTextColor(Color.BLACK);
+        sunrise.setTextColor(Color.BLACK);
+        location.setTextColor(Color.BLACK);
+        hardTemperature.setTextColor(Color.BLACK);
+        hardWind.setTextColor(Color.BLACK);
+        hardVisibility.setTextColor(Color.BLACK);
+        hardHuminidity.setTextColor(Color.BLACK);
+        hardSunrise.setTextColor(Color.BLACK);
+        hardSunset.setTextColor(Color.BLACK);
     }
 
 

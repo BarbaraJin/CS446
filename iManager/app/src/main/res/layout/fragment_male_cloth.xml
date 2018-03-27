@@ -1,0 +1,139 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ziniuyimeixiang.imanager.MaleClothFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageButton
+            android:id="@+id/jeansButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="50dp"
+            android:background="@null"
+            android:src="@drawable/grey_jeans_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageButton
+            android:id="@+id/shortsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/jeansButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="0dp"
+            android:background="@null"
+            android:src="@drawable/grey_shorts_button"
+            app:layout_constraintBottom_toBottomOf="@+id/jeansButton"
+            app:layout_constraintStart_toEndOf="@+id/jeansButton"
+            app:layout_constraintTop_toTopOf="@+id/jeansButton"
+            app:layout_constraintVertical_bias="1.0" />
+
+
+        <ImageButton
+            android:id="@+id/tshirtButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/shortsButton"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="0dp"
+            android:background="@null"
+            android:src="@drawable/grey_tshirt_button"
+            app:layout_constraintBottom_toBottomOf="@+id/shortsButton"
+            app:layout_constraintStart_toEndOf="@+id/shortsButton"
+            app:layout_constraintTop_toTopOf="@+id/shortsButton"
+            app:layout_constraintVertical_bias="1.0" />
+
+
+        <ImageButton
+            android:id="@+id/leggingButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="50dp"
+            android:background="@null"
+            android:src="@drawable/grey_legging_button"
+            app:layout_constraintEnd_toEndOf="@+id/jeansButton"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/jeansButton"
+            app:layout_constraintTop_toBottomOf="@+id/jeansButton" />
+
+
+        <ImageButton
+            android:id="@+id/hoodiesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="0dp"
+            android:background="@null"
+            android:src="@drawable/grey_hoodies_button"
+            app:layout_constraintBottom_toBottomOf="@+id/leggingButton"
+            app:layout_constraintStart_toEndOf="@+id/leggingButton"
+            app:layout_constraintTop_toTopOf="@+id/leggingButton"
+            app:layout_constraintVertical_bias="1.0" />
+
+
+        <ImageButton
+            android:id="@+id/sweaterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="0dp"
+            android:background="@null"
+            android:src="@drawable/grey_sweater_button"
+            app:layout_constraintBottom_toBottomOf="@+id/hoodiesButton"
+            app:layout_constraintStart_toEndOf="@+id/hoodiesButton"
+            app:layout_constraintTop_toTopOf="@+id/hoodiesButton" />
+
+
+        <ImageButton
+            android:id="@+id/windProofJacketButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="50dp"
+            android:background="@null"
+            android:src="@drawable/grey_wind_proof_jacket_button"
+            app:layout_constraintEnd_toEndOf="@+id/leggingButton"
+            app:layout_constraintStart_toStartOf="@+id/leggingButton"
+            app:layout_constraintTop_toBottomOf="@+id/leggingButton" />
+
+
+        <ImageButton
+            android:id="@+id/maleSpringCoatButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="0dp"
+            android:background="@null"
+            android:src="@drawable/grey_male_spring_coat_button"
+            app:layout_constraintBottom_toBottomOf="@+id/windProofJacketButton"
+            app:layout_constraintStart_toEndOf="@+id/windProofJacketButton"
+            app:layout_constraintTop_toTopOf="@+id/windProofJacketButton" />
+
+
+        <ImageButton
+            android:id="@+id/winterCoatButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="0dp"
+            android:background="@null"
+            android:src="@drawable/grey_round_winter_coat_button"
+            app:layout_constraintBottom_toBottomOf="@+id/maleSpringCoatButton"
+            app:layout_constraintStart_toEndOf="@+id/maleSpringCoatButton"
+            app:layout_constraintTop_toTopOf="@+id/maleSpringCoatButton" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</FrameLayout>
