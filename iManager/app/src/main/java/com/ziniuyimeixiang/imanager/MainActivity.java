@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
@@ -29,7 +30,23 @@ import com.google.maps.model.Duration;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,6 +54,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
@@ -56,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         C_Button = findViewById(R.id.Cbutton);
         R_Button = findViewById(R.id.Trans);
         this.askP();
-        this.getLocationFromAddress(this, "Toronto");
+        mModel.route();
         this.getPosition();
         this.setCalender();
         this.setRoute();
@@ -89,8 +110,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void transClick(View view) {
-        Intent weatherIntent = new Intent(MainActivity.this, TransActivity.class);
-        startActivity(weatherIntent);
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("google.navigation:q="+mModel.getLocation()));
+        startActivity(intent);
     }
 
     public void setCalender() {
@@ -107,28 +129,33 @@ public class MainActivity extends AppCompatActivity implements Observer {
         long currentTime = System.currentTimeMillis();
         Cursor cursor = null;
         String selection = "(dtstart >= " + currentTime + ")";
-        if (checkSelfPermission(Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CALENDAR}, 120);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-        }
-        //getcursor
-        else {
-            cursor = getContentResolver().query(CalendarContract.Events.CONTENT_URI, null, selection, null, CalendarContract.Events.DTSTART + " ASC");
-            cursor.moveToNext();
-            int id1 = cursor.getColumnIndex(CalendarContract.Events.TITLE);
-            int id2 = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
-            int id4 = cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.READ_CALENDAR}, 120);
+                }
+                //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+            }
+            //getcursor
+            else {
+                cursor = getContentResolver().query(CalendarContract.Events.CONTENT_URI, null, selection, null, CalendarContract.Events.DTSTART + " ASC");
+                cursor.moveToNext();
+                int id1 = cursor.getColumnIndex(CalendarContract.Events.TITLE);
+                int id2 = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
+                int id4 = cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
 
-            //display the event
-            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-            String title = cursor.getString(id1);
-            Date start_date = new Date(Long.valueOf(cursor.getString(id2)) + (60 * 60 * 1000) * mModel.getHourdiff());
-            String start = formatter.format(start_date);
-            location = cursor.getString(id4);
-            C_Button.setText(start + title + location);
-            mModel.setLocation(location);
-            mModel.setTime(start);
+                //display the event
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+                String title = cursor.getString(id1);
+                Date start_date = new Date(Long.valueOf(cursor.getString(id2)) + (60 * 60 * 1000) * mModel.getHourdiff());
+                String start = formatter.format(start_date);
+                location = cursor.getString(id4);
+                C_Button.setText(start + title + location);
+                mModel.setLocation(location);
+                mModel.setTime(start);
+            }
         }
+    }
 
     public void setRoute() {
         //replace with google map api later
@@ -168,30 +195,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
             mModel.curr_postion(longitude, latitude);
         }
     }
-    public void getLocationFromAddress(Context context,String strAddress) {
-
-        Geocoder coder = new Geocoder(context);
-        List<Address> address;
-        LatLng p1 = null;
-
-        try {
-            // May throw an IOException
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return;
-            }
-
-            Address location = address.get(0);
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
-
-        } catch (IOException ex) {
-
-            ex.printStackTrace();
-        }
-
-        mModel.setEvent_att(p1.lat);
-        mModel.setEvent_lon(p1.lng);
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -208,9 +211,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        this.setCalender();
-        this.setRoute();
-        //toronto should be replaced by the nearest event position
-        this.getLocationFromAddress(this, "Toronto");
+        if ((String)arg == "new event") {
+            this.setCalender();
+        }
+        if ((String)arg == "new route"){
+            mModel.route();
+            this.setRoute();
+        }
+        if ((String)arg == "new position") {
+            //toronto should be replaced by the nearest event position
+            this.setRoute();
+        }
     }
 }

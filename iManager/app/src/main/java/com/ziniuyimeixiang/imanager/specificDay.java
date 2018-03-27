@@ -83,10 +83,10 @@ public class specificDay extends AppCompatActivity implements Observer {
                     String end = formatter.format(end_date);
                     String location = cursor.getString(id4);
 //                    Toast.makeText(this, title + "," + start + "," + end + "," + location, Toast.LENGTH_SHORT).show();
-                    events.add(start);
-                    events.add(end);
                     events.add(title);
-                    events.add(location);
+                    events.add("Start time: "+start);
+                    events.add("End time: "+end);
+                    events.add("Location is "+location);
                 } else {
                     Toast.makeText(this, "no more", Toast.LENGTH_SHORT).show();
                 }
