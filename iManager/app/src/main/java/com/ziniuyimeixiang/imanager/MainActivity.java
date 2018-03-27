@@ -73,6 +73,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private TextView weatherTemp;
     private TextView weatherInfo;
 
+    private TextView et;
+    private TextView st;
+    private TextView lt;
+    private TextView rt;
+
     Button test;
 
 
@@ -90,13 +95,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
 //        clothesData.addObserver(this);
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        st = findViewById(R.id.start_t);
+        et = findViewById(R.id.event_t);
+        lt = findViewById(R.id.location_t);
+        rt = findViewById(R.id.route_t);
 //        Intent alarm = new Intent(MainActivity.this,Alarm.class);
 //        startActivity(alarm);
-        C_Button = findViewById(R.id.Cbutton);
-        R_Button = findViewById(R.id.Trans);
         this.askP();
-        mModel.route();
+        //mModel.route();
+        this.getLocationFromAddress(this,mModel.getLocation());
         this.getPosition();
         this.setCalender();
         this.setRoute();
@@ -177,7 +186,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 Date start_date = new Date(Long.valueOf(cursor.getString(id2)) + (60 * 60 * 1000) * mModel.getHourdiff());
                 String start = formatter.format(start_date);
                 location = cursor.getString(id4);
-                C_Button.setText(start + title + location);
+                et.setText(title);
+                st.setText(start);
+                lt.setText(location);
                 mModel.setLocation(location);
                 mModel.setTime(start);
             }
@@ -199,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         int speedIs1KmMinute = 100;
         float estimatedDriveTimeInMinutes = distance / speedIs1KmMinute;
-        R_Button.setText("distance is " + distance + "time needed is " + estimatedDriveTimeInMinutes);
+        rt.setText("You need "+estimatedDriveTimeInMinutes+" minutes to reach your event location.");
     }
     private boolean permission = false;
     public void getPosition() {
@@ -256,7 +267,30 @@ public class MainActivity extends AppCompatActivity implements Observer {
         weatherTemp.setText(weatherModel.getCurrentTemp() + "°C");
         weatherInfo.setText(weatherModel.getWeatherText());
     }
+    public void getLocationFromAddress(Context context,String strAddress) {
 
+        Geocoder coder = new Geocoder(context);
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return;
+            }
+
+            Address location = address.get(0);
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (IOException ex) {
+
+            ex.printStackTrace();
+        }
+
+        mModel.setEvent_att(p1.lat);
+        mModel.setEvent_lon(p1.lng);
+    }
     /**
      * update function
      * @param o
@@ -264,20 +298,19 @@ public class MainActivity extends AppCompatActivity implements Observer {
      */
 
     public void update(Observable o, Object arg) {
+        if (arg == null){
+            updateWeather();
+        }
 
-        this.setCalender();
-        this.setRoute();
-        //toronto should be replaced by the nearest event position
-        this.getLocationFromAddress(this, "Toronto");
-
-        updateWeather();
 
 
         if ((String)arg == "new event") {
             this.setCalender();
         }
         if ((String)arg == "new route"){
-            mModel.route();
+            getLocationFromAddress(this,mModel.getLocation());
+
+            //mModel.route();
             this.setRoute();
         }
         if ((String)arg == "new position") {
