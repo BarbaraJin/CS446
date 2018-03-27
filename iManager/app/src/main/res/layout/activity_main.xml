@@ -8,23 +8,6 @@
     tools:context="com.ziniuyimeixiang.imanager.MainActivity">
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="289dp"
-        android:layout_height="132dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="weatherBottonClicked"
-        android:text="Weather：temprature:999C Suggested to wear nothing"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.379"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.083" />
-
-    <Button
         android:id="@+id/Cbutton"
         android:layout_width="287dp"
         android:layout_height="157dp"
@@ -56,4 +39,60 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.955" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="390dp"
+        android:layout_height="176dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="weatherBottonClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/weather_background" />
+
+    <TextView
+        android:id="@+id/locationOnWeatherButton"
+        android:layout_width="162dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="location"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toStartOf="@+id/tempOnWeatherButton"
+        app:layout_constraintHorizontal_bias="0.356"
+        app:layout_constraintStart_toStartOf="@+id/imageButton"
+        app:layout_constraintTop_toTopOf="@+id/imageButton" />
+
+    <TextView
+        android:id="@+id/tempOnWeatherButton"
+        android:layout_width="85dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="12dp"
+        android:text="Temp"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton"
+        app:layout_constraintTop_toTopOf="@+id/locationOnWeatherButton" />
+
+    <TextView
+        android:id="@+id/weatherInfoOnWeatherButton"
+        android:layout_width="260dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Weather Info"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="@+id/imageButton"
+        app:layout_constraintTop_toBottomOf="@+id/locationOnWeatherButton"
+        app:layout_constraintVertical_bias="0.35" />
+
 </android.support.constraint.ConstraintLayout>

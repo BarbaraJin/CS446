@@ -5,12 +5,21 @@
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- ask for internet permission -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- ask for writing and reading file permissions -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!--ask for camera permission-->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera2"
+        android:required="true"/>
 
     <application
         android:allowBackup="true"
@@ -34,10 +43,13 @@
             android:name=".Weather"
             android:label="@string/title_activity_weather"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".TransActivity"></activity>
+        <activity android:name=".TransActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB1zIGXslsOzfapAQN0ioRc0INjz6Gwoss"/>
+            android:value="AIzaSyB1zIGXslsOzfapAQN0ioRc0INjz6Gwoss" />
+
+        <activity android:name=".ClothActivity" />
     </application>
 
 </manifest>

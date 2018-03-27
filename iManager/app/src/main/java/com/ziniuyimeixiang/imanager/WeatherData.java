@@ -1,14 +1,24 @@
 package com.ziniuyimeixiang.imanager;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSerializer;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -44,12 +54,26 @@ public class WeatherData extends Model {
 
     Bitmap weatherIcon;
 
+    Context context;
+
+    /**
+     * create instance
+     */
+
+    private static final WeatherData ourInstance = new WeatherData();
+    static WeatherData getInstance()
+    {
+        return ourInstance;
+    }
 
     /**
      * Constructor, getter and setter
      */
     public WeatherData() {
-        defaultCityRegion = "Toronto, ON";
+    }
+
+    public void setWeatherInfo(){
+        readWeatherSettingJson();
     }
 
     public String getCurrentLocation() {
@@ -70,12 +94,22 @@ public class WeatherData extends Model {
         return weatherIcon;
     }
 
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     public void setWeatherIcon(Bitmap weatherIcon) {
         this.weatherIcon = weatherIcon;
     }
 
     public void setDefaultCityRegion(String defaultCityRegion) {
         this.defaultCityRegion = defaultCityRegion;
+        updateJsonFile_defaultCityRegion();
     }
 
     public String getCity() {
@@ -202,6 +236,92 @@ public class WeatherData extends Model {
     /**
      * other function
      */
+
+
+    /* read data from weather setting json */
+    @SuppressWarnings("unchecked")
+    private void readWeatherSettingJson() {
+        JsonParser parser = new JsonParser();
+
+        try{
+            String filePath = context.getFilesDir()+"/assets/weatherSetting.json";
+            File file = new File(filePath);
+            Object obj = parser.parse(new FileReader(file));
+            String temp = obj.toString();
+            JSONObject object = new JSONObject(temp);
+//            JSONObject object = (JSONObject) obj;
+//            JSONObject location = channel.optJSONObject("location");
+            defaultCityRegion = object.optString("defaultCityRegion");
+//            defaultCityRegion = object.getString("defaultCityRegion");
+        } catch(FileNotFoundException e){
+            createWeatherSettingJsonFile();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /* if not find json file, then create one */
+    private void createWeatherSettingJsonFile() {
+        try{
+            String fileName = "weatherSetting.json";
+//            File file = new File("weatherSetting.json");
+//            file.createNewFile();
+//            FileWriter writer = new FileWriter(file);
+            JSONObject obj = new JSONObject();
+            obj.put("defaultCityRegion","Toronto,ON");
+            defaultCityRegion = "Toronto,ON";
+//            writer.write(obj.toString());
+//            writer.flush();
+            wrtieFileOnInternalStorage(fileName,obj.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void updateJsonFile_defaultCityRegion() {
+        JsonParser parser = new JsonParser();
+        try{
+            String filePath = context.getFilesDir()+"/assets/weatherSetting.json";
+            File file = new File(filePath);
+            Object obj = parser.parse(new FileReader(file));
+
+            String temp = obj.toString();
+            JSONObject jsonObject = new JSONObject(temp);
+
+//            JSONObject jsonObject = (JSONObject) obj;
+            jsonObject.put("defaultCityRegion", defaultCityRegion);
+
+            FileWriter writer = new FileWriter(file);
+            writer.write(jsonObject.toString());
+            writer.flush();
+            writer.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void wrtieFileOnInternalStorage(String sFileName, String sBody){
+        File file = new File(context.getFilesDir(),"assets");
+        if(!file.exists()){
+            file.mkdir();
+        }
+
+        try{
+            File gpxfile = new File(file, sFileName);
+            FileWriter writer = new FileWriter(gpxfile);
+            writer.write(sBody);
+            writer.flush();
+            writer.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+    }
+
 
     /**
      * get and read data from web
