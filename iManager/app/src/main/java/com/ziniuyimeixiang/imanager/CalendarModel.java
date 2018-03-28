@@ -134,7 +134,7 @@ public class CalendarModel extends Model {
         try {
             HttpURLConnection connection = null;
             BufferedReader reader = null;
-
+            Log.d("1","1");
             String address = this.getLocation().replaceAll(" ", "%20");
             connection = (HttpURLConnection) (new URL("http://maps.google.com/maps/api/geocode/json?address=" + address + "&sensor=false")).openConnection();
             connection.setRequestMethod("GET");
@@ -183,9 +183,8 @@ public class CalendarModel extends Model {
         }
     }
     public void route(){
-        Log.d("1","1");
-//        Eventposition ep = new Eventposition();
-//        ep.execute(new String[]{location});
+        Eventposition ep = new Eventposition();
+        ep.execute(new String[]{location});
     }
     private class Eventposition extends AsyncTask<String, Void, Void> {
 
@@ -204,7 +203,7 @@ public class CalendarModel extends Model {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             setChanged();
-            notifyObservers("new route");
+            notifyObservers("new position");
         }
 
 

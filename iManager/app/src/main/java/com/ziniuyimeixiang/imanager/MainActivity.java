@@ -104,10 +104,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
 //        Intent alarm = new Intent(MainActivity.this,Alarm.class);
 //        startActivity(alarm);
         this.askP();
-        mModel.route();
+
         //this.getLocationFromAddress(this,mModel.getLocation());
         this.getPosition();
         this.setCalender();
+        mModel.route();
         this.setRoute();
 
         //toronto should be replaced by the nearest event position
