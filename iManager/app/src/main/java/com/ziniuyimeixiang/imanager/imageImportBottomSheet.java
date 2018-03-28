@@ -191,7 +191,7 @@ public class imageImportBottomSheet extends BottomSheetDialogFragment implements
     private Bitmap resizeImage(Bitmap photo) {
         int hight = photo.getHeight();
         int width = photo.getWidth();
-        int limit = 500;
+        int limit = 300;
         double scale = 0.0;
         if (hight > limit && width > limit){
             if (hight <= width){
