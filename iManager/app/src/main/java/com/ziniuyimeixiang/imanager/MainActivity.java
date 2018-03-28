@@ -189,7 +189,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 et.setText(title);
                 st.setText(start);
                 lt.setText(location);
-                mModel.setLocation(location);
+                if (location !=  ""){
+                    mModel.setLocation(location);
+                }
                 mModel.setTime(start);
             }
         }

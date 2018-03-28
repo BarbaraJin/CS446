@@ -157,13 +157,6 @@ public class CalendarModel extends Model {
             return buffer.toString();
 
 
-//            String address = this.getLocation().replaceAll(" ","%20");
-//            Request request = new Request.Builder()
-//                    .url("http://maps.google.com/maps/api/geocode/json?address=" + address + "&sensor=false")
-//                    .build();
-//            OkHttpClient client = new OkHttpClient ();
-//
-//            response= client.newCall(request).execute();
         } catch (ClientProtocolException e) {
         } catch (IOException e) {
         } catch (Exception e) {
@@ -171,17 +164,7 @@ public class CalendarModel extends Model {
         }
         return null;
     }
-//        JSONObject jsonObject = new JSONObject();
-//        try {
-//            jsonObject = new JSONObject(response.body().string());
-//        } catch (JSONException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        getLatLong (jsonObject);
+
     public void getLatLong(JSONObject jsonObject) {
 
         try {
@@ -200,8 +183,9 @@ public class CalendarModel extends Model {
         }
     }
     public void route(){
-        Eventposition ep = new Eventposition();
-        ep.execute(new String[]{location});
+        Log.d("1","1");
+//        Eventposition ep = new Eventposition();
+//        ep.execute(new String[]{location});
     }
     private class Eventposition extends AsyncTask<String, Void, Void> {
 
