@@ -78,7 +78,9 @@ public class CalendarModel extends Model {
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        if (!location.equals("")){
+            this.location = location;
+        }
     }
 
     public String getTime() {

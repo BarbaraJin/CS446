@@ -346,9 +346,10 @@ public class ClothesModel extends Model {
         ifGetImages = false;
         images = dbHelper.getAllImage(clothType);
         photos = convertAllImagesToBitmap(images);
-        if (photos.size() != 0){
-            ifGetImages = true;
-        }
+//        if (photos.size() != 0){
+//            ifGetImages = true;
+//        }
+        ifGetImages = true;
         setChanged();
         notifyObservers();
     }
