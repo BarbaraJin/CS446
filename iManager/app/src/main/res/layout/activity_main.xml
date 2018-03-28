@@ -64,19 +64,22 @@
 
     <ImageButton
         android:id="@+id/imageButton2"
-        android:layout_width="390dp"
-        android:layout_height="193dp"
+        android:layout_width="373dp"
+        android:layout_height="165dp"
+        android:layout_marginBottom="100dp"
         android:onClick="calenderBottonClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageButton"
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/banner_calendar" />
 
     <ImageButton
         android:id="@+id/imageButton3"
-        android:layout_width="388dp"
-        android:layout_height="0dp"
+        android:layout_width="380dp"
+        android:layout_height="159dp"
         android:onClick="transClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +90,7 @@
 
     <TextView
         android:id="@+id/event_t"
-        android:layout_width="0dp"
+        android:layout_width="140dp"
         android:layout_height="47dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -104,20 +107,23 @@
 
     <TextView
         android:id="@+id/start_t"
-        android:layout_width="0dp"
+        android:layout_width="132dp"
         android:layout_height="46dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
         android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.322"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_t" />
+        app:layout_constraintTop_toTopOf="@+id/imageButton2" />
 
     <TextView
         android:id="@+id/location_t"
-        android:layout_width="0dp"
+        android:layout_width="112dp"
         android:layout_height="44dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -125,11 +131,12 @@
         android:layout_marginTop="8dp"
         android:text="TextView"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.296"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_t" />
+        app:layout_constraintTop_toTopOf="@+id/imageButton2"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/route_t"
@@ -143,7 +150,7 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.224"
+        app:layout_constraintHorizontal_bias="0.22"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageButton3"
         app:layout_constraintVertical_bias="0.0" />
