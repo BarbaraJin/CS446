@@ -104,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
 //        Intent alarm = new Intent(MainActivity.this,Alarm.class);
 //        startActivity(alarm);
         this.askP();
-        //mModel.route();
-        this.getLocationFromAddress(this,mModel.getLocation());
+        mModel.route();
+        //this.getLocationFromAddress(this,mModel.getLocation());
         this.getPosition();
         this.setCalender();
         this.setRoute();
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 //display the event
                 SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy");
                 String title = cursor.getString(id1);
-                Date start_date = new Date(Long.valueOf(cursor.getString(id2)) + (60 * 60 * 1000) * mModel.getHourdiff());
+                Date start_date = new Date(Long.valueOf(cursor.getString(id2)));
                 String start = formatter.format(start_date);
                 location = cursor.getString(id4);
                 et.setText(title);
@@ -308,9 +308,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
             this.setCalender();
         }
         if ((String)arg == "new route"){
-            getLocationFromAddress(this,mModel.getLocation());
+            //getLocationFromAddress(this,mModel.getLocation());
 
-            //mModel.route();
+            mModel.route();
             this.setRoute();
         }
         if ((String)arg == "new position") {
