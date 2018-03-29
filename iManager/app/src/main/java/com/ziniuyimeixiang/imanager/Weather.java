@@ -358,41 +358,41 @@ public class Weather extends AppCompatActivity implements Observer {
             if (hour>= 7 && hour<=19){
                 constraintLayout.setBackgroundResource(R.drawable.day);
             }
-            else{
-                constraintLayout.setBackgroundResource(R.drawable.night);
-                temperature.setTextColor(Color.WHITE);
-                highLowTemp.setTextColor(Color.WHITE); 
-                cityRegion.setTextColor(Color.WHITE);
-                wind.setTextColor(Color.WHITE);
-                humidity.setTextColor(Color.WHITE);
-                visibility.setTextColor(Color.WHITE);
-                sunset.setTextColor(Color.WHITE);
-                sunrise.setTextColor(Color.WHITE);
-                location.setTextColor(Color.WHITE);
-                hardTemperature.setTextColor(Color.WHITE);
-                hardWind.setTextColor(Color.WHITE);
-                hardVisibility.setTextColor(Color.WHITE);
-                hardHuminidity.setTextColor(Color.WHITE);
-                hardSunrise.setTextColor(Color.WHITE);
-                hardSunset.setTextColor(Color.WHITE);
-                return;
-            }
+//            else{
+//                constraintLayout.setBackgroundResource(R.drawable.night);
+//                temperature.setTextColor(Color.WHITE);
+//                highLowTemp.setTextColor(Color.WHITE);
+//                cityRegion.setTextColor(Color.WHITE);
+//                wind.setTextColor(Color.WHITE);
+//                humidity.setTextColor(Color.WHITE);
+//                visibility.setTextColor(Color.WHITE);
+//                sunset.setTextColor(Color.WHITE);
+//                sunrise.setTextColor(Color.WHITE);
+//                location.setTextColor(Color.WHITE);
+//                hardTemperature.setTextColor(Color.WHITE);
+//                hardWind.setTextColor(Color.WHITE);
+//                hardVisibility.setTextColor(Color.WHITE);
+//                hardHuminidity.setTextColor(Color.WHITE);
+//                hardSunrise.setTextColor(Color.WHITE);
+//                hardSunset.setTextColor(Color.WHITE);
+//                return;
+//            }
         }
-        temperature.setTextColor(Color.BLACK);
-        highLowTemp.setTextColor(Color.BLACK);
-        cityRegion.setTextColor(Color.BLACK);
-        wind.setTextColor(Color.BLACK);
-        humidity.setTextColor(Color.BLACK);
-        visibility.setTextColor(Color.BLACK);
-        sunset.setTextColor(Color.BLACK);
-        sunrise.setTextColor(Color.BLACK);
-        location.setTextColor(Color.BLACK);
-        hardTemperature.setTextColor(Color.BLACK);
-        hardWind.setTextColor(Color.BLACK);
-        hardVisibility.setTextColor(Color.BLACK);
-        hardHuminidity.setTextColor(Color.BLACK);
-        hardSunrise.setTextColor(Color.BLACK);
-        hardSunset.setTextColor(Color.BLACK);
+//        temperature.setTextColor(Color.BLACK);
+//        highLowTemp.setTextColor(Color.BLACK);
+//        cityRegion.setTextColor(Color.BLACK);
+//        wind.setTextColor(Color.BLACK);
+//        humidity.setTextColor(Color.BLACK);
+//        visibility.setTextColor(Color.BLACK);
+//        sunset.setTextColor(Color.BLACK);
+//        sunrise.setTextColor(Color.BLACK);
+//        location.setTextColor(Color.BLACK);
+//        hardTemperature.setTextColor(Color.BLACK);
+//        hardWind.setTextColor(Color.BLACK);
+//        hardVisibility.setTextColor(Color.BLACK);
+//        hardHuminidity.setTextColor(Color.BLACK);
+//        hardSunrise.setTextColor(Color.BLACK);
+//        hardSunset.setTextColor(Color.BLACK);
     }
 
 
