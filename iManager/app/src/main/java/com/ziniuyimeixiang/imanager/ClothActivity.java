@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.GridView;
@@ -46,7 +47,7 @@ public class ClothActivity extends AppCompatActivity implements Observer {
     private MaleClothFragment maleClothFragment;
 
     /* layout param */
-//    private GridView photoGridLayout;
+    private GridView photoGridLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,8 @@ public class ClothActivity extends AppCompatActivity implements Observer {
 //        initiateWeatherInfo();
         initiateClothesInfo();
 
-//        initiateLayout();
+        initiateLayout();
+        gridListener();
         initiateFloatingButton();
         listenFABButton();
 
@@ -72,7 +74,17 @@ public class ClothActivity extends AppCompatActivity implements Observer {
      */
 
     private void initiateLayout() {
-//        photoGridLayout = findViewById(R.id.photoGridLayout);
+        photoGridLayout = findViewById(R.id.photoGridLayout);
+    }
+
+
+    private void gridListener() {
+        photoGridLayout.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                return false;
+            }
+        });
     }
 
 
@@ -238,7 +250,6 @@ public class ClothActivity extends AppCompatActivity implements Observer {
      */
 
     private void updatePhoto() {
-        GridView photoGridLayout = findViewById(R.id.photoGridLayout);
         ArrayList<Bitmap> images = clothesData.getPhotos();
         int numOfImage = images.size();
         if (numOfImage == 0){
@@ -255,6 +266,8 @@ public class ClothActivity extends AppCompatActivity implements Observer {
             photoGridLayout.setAdapter(adapter);
         }
     }
+
+
 
 
     /**

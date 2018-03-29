@@ -108,6 +108,11 @@ public class DbHelper extends SQLiteOpenHelper {
         return images;
     }
 
+    public void deleteImage(String tableName, int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(tableName, KEY_ID + " = ?", new String[] {String.valueOf(id)});
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_winterCoat);
