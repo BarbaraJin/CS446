@@ -8,7 +8,7 @@
     android:id="@+id/weatherConstraintLayout"
     tools:context="com.ziniuyimeixiang.imanager.Weather"
     tools:showIn="@layout/activity_weather"
-    android:background="@drawable/hail"
+    android:background="@drawable/day"
     >
 
     <!-- TODO need to change text waterloo to other -->
