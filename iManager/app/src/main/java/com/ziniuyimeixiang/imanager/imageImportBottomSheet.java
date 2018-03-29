@@ -177,7 +177,9 @@ public class imageImportBottomSheet extends BottomSheetDialogFragment implements
             try {
                 Uri imageUri = data.getData();
                 InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-                tempPhoto = BitmapFactory.decodeStream(imageStream);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 2;
+                tempPhoto = BitmapFactory.decodeStream(imageStream, null, options);
                 tempPhoto = resizeImage(tempPhoto);
                 updateSelectedImageView(tempPhoto);
             } catch (FileNotFoundException e) {
