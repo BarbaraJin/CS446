@@ -23,10 +23,10 @@
     <TextView
         android:id="@+id/locationOnWeatherButton"
         android:layout_width="284dp"
-        android:layout_height="40dp"
+        android:layout_height="90dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="Location"
         android:textSize="25dp"
@@ -39,21 +39,24 @@
         android:id="@+id/tempOnWeatherButton"
         android:layout_width="85dp"
         android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="12dp"
+        android:gravity="center"
         android:text="Temp"
         android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/locationOnWeatherButton"
         app:layout_constraintEnd_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toTopOf="@+id/locationOnWeatherButton"
-        android:gravity="center"/>
+        app:layout_constraintTop_toTopOf="@+id/locationOnWeatherButton" />
 
     <TextView
         android:id="@+id/weatherInfoOnWeatherButton"
         android:layout_width="0dp"
-        android:layout_height="61dp"
+        android:layout_height="41dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:gravity="center"
         android:text="Weather Info"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton"
@@ -61,8 +64,7 @@
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="@+id/imageButton"
         app:layout_constraintTop_toBottomOf="@+id/locationOnWeatherButton"
-        app:layout_constraintVertical_bias="0.35"
-        android:gravity="center"/>
+        app:layout_constraintVertical_bias="0.35" />
 
     <ImageButton
         android:id="@+id/imageButton2"
