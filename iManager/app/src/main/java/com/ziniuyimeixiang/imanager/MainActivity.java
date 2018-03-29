@@ -176,24 +176,26 @@ public class MainActivity extends AppCompatActivity implements Observer {
             //getcursor
             else {
                 cursor = getContentResolver().query(CalendarContract.Events.CONTENT_URI, null, selection, null, CalendarContract.Events.DTSTART + " ASC");
-                cursor.moveToNext();
-                int id1 = cursor.getColumnIndex(CalendarContract.Events.TITLE);
-                int id2 = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
-                int id4 = cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
+                while(cursor.moveToNext()) {
+                    int id1 = cursor.getColumnIndex(CalendarContract.Events.TITLE);
+                    int id2 = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
+                    int id4 = cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
 
-                //display the event
-                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-                String title = cursor.getString(id1);
-                Date start_date = new Date(Long.valueOf(cursor.getString(id2)));
-                String start = formatter.format(start_date);
-                location = cursor.getString(id4);
-                et.setText(title);
-                st.setText(start);
-                lt.setText(location);
-                if (location !=  ""){
-                    mModel.setLocation(location);
+                    //display the event
+                    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+                    String title = cursor.getString(id1);
+                    Date start_date = new Date(Long.valueOf(cursor.getString(id2)));
+                    String start = formatter.format(start_date);
+                    location = cursor.getString(id4);
+                    et.setText(title);
+                    st.setText(start);
+                    lt.setText(location);
+                    if (!location.equals("")) {
+                        mModel.setLocation(location);
+                        mModel.setTime(start);
+                        break;
+                    }
                 }
-                mModel.setTime(start);
             }
         }
     }
