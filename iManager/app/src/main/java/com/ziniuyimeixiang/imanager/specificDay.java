@@ -77,16 +77,18 @@ public class specificDay extends AppCompatActivity implements Observer {
                     //display the event
                     SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd/MM/yyyy");
                     String title = cursor.getString(id1);
-                    Date start_date = new Date(Long.valueOf(cursor.getString(id2)) + (60 * 60 * 1000) * hourDifference);
-                    Date end_date = new Date(Long.valueOf(cursor.getString(id3)) + (60 * 60 * 1000) * hourDifference);
+                    Date start_date = new Date(Long.valueOf(cursor.getString(id2)));
+//                            + (60 * 60 * 1000) * hourDifference);
+                    Date end_date = new Date(Long.valueOf(cursor.getString(id3)));
+//                            + (60 * 60 * 1000) * hourDifference);
                     String start = formatter.format(start_date);
                     String end = formatter.format(end_date);
                     String location = cursor.getString(id4);
 //                    Toast.makeText(this, title + "," + start + "," + end + "," + location, Toast.LENGTH_SHORT).show();
-                    events.add(start);
-                    events.add(end);
                     events.add(title);
-                    events.add(location);
+                    events.add("Start time: "+start);
+                    events.add("End time: "+end);
+                    events.add("Location is "+location);
                 } else {
                     Toast.makeText(this, "no more", Toast.LENGTH_SHORT).show();
                 }

@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -239,8 +240,20 @@ public class ClothActivity extends AppCompatActivity implements Observer {
     private void updatePhoto() {
         GridView photoGridLayout = findViewById(R.id.photoGridLayout);
         ArrayList<Bitmap> images = clothesData.getPhotos();
-        GridLayoutAdapter adapter = new GridLayoutAdapter(this, images, 540);
-        photoGridLayout.setAdapter(adapter);
+        int numOfImage = images.size();
+        if (numOfImage == 0){
+            photoGridLayout.getLayoutParams().height = 0;
+            photoGridLayout.requestLayout();
+            makeToast("Please add more photo");
+        }
+        else{
+            double row = (double)numOfImage/(double)2;
+            int numOfRowInGrid =(int) Math.ceil(row);
+            photoGridLayout.getLayoutParams().height = numOfRowInGrid*540;
+            photoGridLayout.requestLayout();
+            GridLayoutAdapter adapter = new GridLayoutAdapter(this, images, 540);
+            photoGridLayout.setAdapter(adapter);
+        }
     }
 
 
@@ -254,6 +267,10 @@ public class ClothActivity extends AppCompatActivity implements Observer {
         if (clothesData.getIfGetImages()){
             updatePhoto();
         }
+    }
+
+    private void makeToast(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
     }
 
 

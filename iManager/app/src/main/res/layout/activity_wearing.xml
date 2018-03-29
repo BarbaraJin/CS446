@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ziniuyimeixiang.imanager.ClothActivity">
+    tools:context="com.ziniuyimeixiang.imanager.ClothActivity"
+    android:background="@drawable/blue_cloth_background">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/imageFloatingButton"
@@ -78,7 +79,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,14 +105,17 @@
             <GridView
                 android:id="@+id/photoGridLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:numColumns="auto_fit"
-                />
+                android:layout_height="match_parent"
+                android:numColumns="auto_fit" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/photoNotificationText"
                 android:layout_width="match_parent"
-                android:layout_height="60dp" />
+                android:layout_height="60dp"
+                android:scaleType="center"
+                android:textSize="20sp"/>
+
+
 
         </LinearLayout>
 

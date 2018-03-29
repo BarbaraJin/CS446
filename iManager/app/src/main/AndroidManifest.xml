@@ -21,6 +21,9 @@
     <uses-feature android:name="android.hardware.camera2"
         android:required="true"/>
 
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -43,13 +46,21 @@
             android:name=".Weather"
             android:label="@string/title_activity_weather"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".TransActivity" />
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB1zIGXslsOzfapAQN0ioRc0INjz6Gwoss" />
 
+
         <activity android:name=".ClothActivity" />
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
+
     </application>
 
 </manifest>
